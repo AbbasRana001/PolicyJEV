@@ -51,7 +51,7 @@ def make_client(session: FakeSession) -> JevClient:
     """Client using a fake transport."""
     return JevClient(
         api_key="test-key", endpoint="https://example.invalid", model=MODEL,
-        price_per_million_input_tokens=0.5, max_retries=1, backoff_base_seconds=0.0,
+        cost_rate=0.5, max_retries=1, backoff_base_seconds=0.0,
         session=session, sleep=lambda s: None,
     )
 
@@ -87,8 +87,8 @@ def world(monkeypatch, tmp_path):
 
 
 def run_cli(monkeypatch, world, *extra):
-    monkeypatch.setenv("TYPESAFE_HARD_STOP_USD", "3")
-    monkeypatch.setenv("TYPESAFE_PRICE_PER_MILLION_INPUT_TOKENS", "0.5")
+    monkeypatch.setenv("TYPESAFE_HARD_STOP", "3")
+    monkeypatch.setenv("TYPESAFE_COST_RATE", "0.5")
     monkeypatch.setattr(
         sys, "argv", ["second_pass", "--questions", str(world.questions), *extra]
     )

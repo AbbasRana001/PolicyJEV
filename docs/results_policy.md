@@ -1,6 +1,6 @@
 # Moderation policy results
 
-This document reports the moderation policy defined in Amendment 3 of `docs/experiment_protocol.md`. The rule, the targets and the test metrics were fixed and tagged (`policy-frozen`) before any policy number was computed on the test set, and the policy was evaluated on test once. Every number below comes from tables i–m of `docs/results_tables.md`. The ranking results are in `docs/results.md`.
+This document reports the moderation policy defined in Amendment 3 of `docs/experiment_protocol.md`. The rule, the targets, the support floor and the test metrics were specified in Amendment 3 and tagged (`policy-frozen`) before the policy was evaluated on the test set, and the policy was evaluated on test once. Amendment 3 was written after the test predictions existed, after the test results for average precision, F1, calibration and the review-budget analysis had been seen, and after a results report existed. The numbers below come from tables i–m of `docs/results_tables.md` and from `artifacts/metrics/policy_test_per_label.csv`. The ranking results are in `docs/results.md`.
 
 ## The policy
 
@@ -15,7 +15,7 @@ A comment receives the most severe outcome across its six labels. Thresholds are
 - **LOW** is the highest threshold at which at least 90% of that label's validation positives still score at or above it. At most about 10% of true positives are auto-allowed.
 - **HIGH** is the lowest threshold at which precision on validation is at least 90% and at least 30 validation comments score at or above it. If no threshold qualifies, automatic action is switched off for that label and everything above LOW goes to human review.
 
-The 0.90 targets are assumptions, not findings. To show how much they matter, a pre-specified grid of recall and precision targets (0.80, 0.90, 0.95) is reported as a secondary, descriptive analysis.
+The 0.90 targets are assumptions, not findings. To show how much they matter, a grid of recall and precision targets (0.80, 0.90, 0.95), specified before the policy was evaluated on the test set, is reported as a secondary, descriptive analysis.
 
 ## What could be automated, on validation
 
@@ -42,7 +42,7 @@ For M1, M3 and M4 lower is better. For M2 higher is better. All 63,978 test comm
 
 Definitions: M1 is the share of all comments sent to human review. M2 is the share of ACTION comments in which at least one label that reached its HIGH threshold is truly positive. M3 is the share of comments with at least one positive label that were allowed. M4 is the same for comments positive for threat, severe_toxic or identity_hate. ACTION coverage is the share of comments with any positive label that received ACTION.
 
-Pre-specified paired contrasts for JEV (difference [95% interval], 1,000 resamples, none left out):
+Paired contrasts for JEV, specified before the policy was evaluated on the test set (difference [95% interval], 1,000 resamples, none left out):
 
 | Metric | JEV minus logistic regression | JEV minus DistilBERT |
 | --- | --- | --- |
@@ -58,7 +58,7 @@ All eight intervals exclude zero. The reading:
 - **DistilBERT is the strongest policy engine on this test set.** It has the lowest review load, the fewest misses and the highest coverage. Its ACTION precision is the lowest of the three.
 - **The rare-label advantage at tight review budgets does not carry over.** At 1% and 2% budgets JEV recovered more rare-label positives (`docs/results.md`, section 5). A policy that must meet a recall target needs much larger review sets than that, and at those sizes JEV is behind (M4 0.050 against 0.018 and 0.013).
 
-## The validation targets did not hold on test
+## The validation targets were missed on test
 
 The thresholds were fitted to give about 90% recall at LOW and about 90% precision at HIGH on validation. The per-label results on test show where that failed.
 
@@ -83,7 +83,7 @@ ACTION precision on test, where automatic action is enabled (validation precisio
 | identity_hate | not enabled | 0.958 | not enabled |
 
 - **Recall held for the baselines and not for JEV.** Logistic regression stays at or near 0.90 on every label (lowest 0.895, obscene). DistilBERT is under target on obscene (0.868) and insult (0.887) only. JEV falls 10 to 13 points under target on toxic (0.788), obscene (0.800) and insult (0.768), and to 0.850 on identity_hate; on severe_toxic (0.907) and threat (0.891) it is close. This is why JEV's miss rates are higher.
-- **The precision shortfall sits on the two most frequent labels.** On toxic and obscene, ACTION precision is 0.62 to 0.82 against a validation figure of about 0.90, for all three systems. On insult (0.932 and 0.952) and on identity_hate (0.958, DistilBERT only, about 130 actioned comments) precision is at or above target. Toxic dominates the volume of automatic actions, so the system-level M2 mostly reflects it. JEV's toxic precision (0.813) is the highest of the three but still about 0.09 below its validation figure.
+- **The precision shortfall sits on the two most frequent labels.** On toxic and obscene, ACTION precision is 0.62 to 0.82 against a validation figure of about 0.90, for all three systems. On insult (0.932 and 0.952) and on identity_hate (0.958, DistilBERT only, on the 119 comments at or above its HIGH threshold) precision is at or above target. Toxic dominates the volume of automatic actions, so the system-level M2 mostly reflects it. JEV's toxic precision (0.813) is the highest of the three but still about 0.09 below its validation figure.
 - **Possible cause, not tested.** The pattern is the same shift between the held-out part of `train.csv` and the official test set that appears in the AP scores (`docs/results.md`, section 1), and it hits the three systems differently by label. I do not have an explanation, and test comments were not inspected.
 
 In practice, thresholds fitted on one data source did not carry their guarantees to a different source. Before enabling automatic action in a real deployment, thresholds would need to be re-estimated on recent data from that deployment.
@@ -119,6 +119,6 @@ ACTION precision (M2) and coverage by precision target:
 - The 0.90 targets and the 30-comment floor are assumptions. The grid shows the results for other targets but does not say which is right.
 - No cost model: review and action are not priced, and human reviewers are treated as perfect.
 - The test-set precision and recall shortfalls are unexplained, and no thresholds were refit after seeing them, in line with the protocol.
-- Per-label precision for rarely actioned labels, such as identity_hate for DistilBERT, rests on about 130 comments and is noisy.
+- Per-label precision for rarely actioned labels, such as identity_hate for DistilBERT, rests on 119 comments and is noisy.
 - Intervals cover test-set sampling only, and the grid and per-label tables have no intervals.
 - Comments are treated as independent, and the systems are compared on one dataset.

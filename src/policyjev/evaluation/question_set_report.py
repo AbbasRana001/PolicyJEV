@@ -33,7 +33,7 @@ def select_question_set(
     baseline: str = BASELINE_VERSION,
     margin: float = SELECTION_MARGIN,
 ) -> tuple[str, str]:
-    """Pre-registered rule: keep the baseline unless an alternative beats it by the margin."""
+    """Pre-specified rule: keep the baseline unless an alternative beats it by the margin."""
     alternatives = {v: m for v, m in mean_ap.items() if v != baseline}
     if not alternatives:
         return baseline, f"no alternative question set scored; {baseline} kept"

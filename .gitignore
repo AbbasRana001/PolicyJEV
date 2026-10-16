@@ -14,7 +14,7 @@ __pycache__/
 # Raw data (never committed)
 data/raw/
 
-# Databases (the JEV cache stores comment text)
+# Databases (the JEV cache holds hashes, ids and answers, not comment text)
 *.sqlite
 *.db
 

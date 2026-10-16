@@ -67,13 +67,13 @@ class FakeSession:
         return FakeResponse(200, ok_body(json["questions"], self.input_tokens))
 
 
-def make_client(session: FakeSession, price: float = 0.5, sleeps: list | None = None) -> JevClient:
+def make_client(session: FakeSession, cost_rate: float = 0.5, sleeps: list | None = None) -> JevClient:
     """Client wired to a fake session with no real sleeping."""
     return JevClient(
         api_key=SECRET,
         endpoint="https://example.invalid/v1/systemone",
         model=MODEL,
-        price_per_million_input_tokens=price,
+        cost_rate=cost_rate,
         max_retries=3,
         backoff_base_seconds=0.01,
         request_timeout_seconds=5,
@@ -221,7 +221,7 @@ def test_cache_key_normalization_and_sensitivity():
 
 def test_budget_gate_stops_new_calls(tmp_path):
     session = FakeSession(input_tokens=1000)
-    client = make_client(session, price=1000.0)
+    client = make_client(session, cost_rate=1000.0)
     with JevCache(tmp_path / "jev.sqlite") as cache:
         counts = run_comments(rows(5), QUESTIONS, "v1", client, cache, 2.5, 1)
         spend = cache.total_spend_usd()
@@ -318,16 +318,16 @@ def test_matching_model_gives_no_warning_and_usage_statistics(tmp_path, caplog):
 
 
 def test_spend_settings_come_from_the_environment_or_env_file_and_have_no_default(monkeypatch, tmp_path):
-    from policyjev.jev.client import HARD_STOP_ENV, PRICE_ENV, JevConfigError, get_spend_setting
+    from policyjev.jev.client import HARD_STOP_ENV, COST_RATE_ENV, JevConfigError, get_spend_setting
 
     env_file = tmp_path / ".env"
     monkeypatch.delenv(HARD_STOP_ENV, raising=False)
-    monkeypatch.delenv(PRICE_ENV, raising=False)
+    monkeypatch.delenv(COST_RATE_ENV, raising=False)
     with pytest.raises(JevConfigError, match=HARD_STOP_ENV):
         get_spend_setting(HARD_STOP_ENV, env_file)
-    env_file.write_text(f"{HARD_STOP_ENV}=2.5{chr(10)}{PRICE_ENV}=\"0.75\"{chr(10)}", encoding="utf-8")
+    env_file.write_text(f"{HARD_STOP_ENV}=2.5{chr(10)}{COST_RATE_ENV}=\"0.75\"{chr(10)}", encoding="utf-8")
     assert get_spend_setting(HARD_STOP_ENV, env_file) == 2.5
-    assert get_spend_setting(PRICE_ENV, env_file) == 0.75
+    assert get_spend_setting(COST_RATE_ENV, env_file) == 0.75
     monkeypatch.setenv(HARD_STOP_ENV, "4")
     assert get_spend_setting(HARD_STOP_ENV, env_file) == 4.0
     for bad in ("abc", "0", "-1", "nan", "inf"):
@@ -336,17 +336,17 @@ def test_spend_settings_come_from_the_environment_or_env_file_and_have_no_defaul
             get_spend_setting(HARD_STOP_ENV, env_file)
 
 
-def test_from_config_needs_a_price_unless_given_one(monkeypatch):
+def test_from_config_needs_a_cost_rate_unless_given_one(monkeypatch):
     from pathlib import Path
 
-    from policyjev.jev.client import PRICE_ENV, JevConfigError
+    from policyjev.jev.client import COST_RATE_ENV, JevConfigError
 
     cfg = {"endpoint": "https://example.invalid", "model": "m", "max_retries": 1,
            "backoff_base_seconds": 0.0, "request_timeout_seconds": 5}
-    monkeypatch.delenv(PRICE_ENV, raising=False)
+    monkeypatch.delenv(COST_RATE_ENV, raising=False)
     monkeypatch.setattr("policyjev.jev.client.REPO_ROOT", Path("/nonexistent"))
-    with pytest.raises(JevConfigError, match=PRICE_ENV):
+    with pytest.raises(JevConfigError, match=COST_RATE_ENV):
         JevClient.from_config(cfg, "key")
-    monkeypatch.setenv(PRICE_ENV, "0.5")
-    assert JevClient.from_config(cfg, "key").price_per_million_input_tokens == 0.5
-    assert JevClient.from_config(cfg, "key", price_per_million_input_tokens=0.0).price_per_million_input_tokens == 0.0
+    monkeypatch.setenv(COST_RATE_ENV, "0.5")
+    assert JevClient.from_config(cfg, "key").cost_rate == 0.5
+    assert JevClient.from_config(cfg, "key", cost_rate=0.0).cost_rate == 0.0

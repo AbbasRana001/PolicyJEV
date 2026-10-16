@@ -6,7 +6,7 @@ A local moderation console for the PolicyJEV case study. It has three pages:
 - **Policy**: an explorer for the LOW and HIGH thresholds, then the test-set policy results (where the comments went, five measures, JEV against each baseline, and what validation promised against what the test set delivered).
 - **Results**: average precision by label and recall of the rare labels against the review budget.
 
-Everything runs on your machine. The API binds to 127.0.0.1, and nothing you type is stored or logged. Every number on the Policy and Results pages comes from `GET /api/results`, which reads the committed metric files; nothing is recomputed.
+The console and its API run on your machine, and logistic regression and DistilBERT score locally; JEV scoring sends the text to the TypeSafe API. The API binds to 127.0.0.1, and nothing you type is stored or logged. Every number on the Policy and Results pages comes from `GET /api/results`, which reads the committed metric files; nothing is recomputed.
 
 ## Install
 

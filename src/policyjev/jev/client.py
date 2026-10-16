@@ -19,8 +19,8 @@ import requests
 from policyjev.config import REPO_ROOT
 
 API_KEY_ENV = "TYPESAFE_API_KEY"
-PRICE_ENV = "TYPESAFE_PRICE_PER_MILLION_INPUT_TOKENS"
-HARD_STOP_ENV = "TYPESAFE_HARD_STOP_USD"
+COST_RATE_ENV = "TYPESAFE_COST_RATE"
+HARD_STOP_ENV = "TYPESAFE_HARD_STOP"
 RETRYABLE_STATUSES = {429, 529}
 MAX_BACKOFF_SECONDS = 60.0
 
@@ -174,7 +174,7 @@ def get_api_key(env_path: Path | None = None) -> str:
 
 
 def get_spend_setting(name: str, env_path: Path | None = None) -> float:
-    """Read a positive number (the input-token price or the spending hard stop) that is never committed."""
+    """Read a positive number (the cost rate used to track spend, or the spending hard stop) that is never committed."""
     raw = _read_setting(name, env_path)
     if not raw:
         raise JevConfigError(
@@ -203,7 +203,7 @@ class JevClient:
         api_key: str,
         endpoint: str,
         model: str,
-        price_per_million_input_tokens: float,
+        cost_rate: float,
         max_retries: int = 5,
         backoff_base_seconds: float = 1.0,
         request_timeout_seconds: float = 30.0,
@@ -216,7 +216,7 @@ class JevClient:
         self._api_key = api_key
         self.endpoint = endpoint
         self.model = model
-        self.price_per_million_input_tokens = price_per_million_input_tokens
+        self.cost_rate = cost_rate
         self.max_retries = max_retries
         self.backoff_base_seconds = backoff_base_seconds
         self.request_timeout_seconds = request_timeout_seconds
@@ -230,21 +230,21 @@ class JevClient:
         cls,
         cfg: dict,
         api_key: str,
-        price_per_million_input_tokens: float | None = None,
+        cost_rate: float | None = None,
         **kwargs: Any,
     ) -> "JevClient":
         """Build a client from the jev block of the project config.
 
-        The input-token price is not in the config: unless given, it is read from the environment or
-        .env (TYPESAFE_PRICE_PER_MILLION_INPUT_TOKENS) and has no default.
+        The cost rate is not in the config: unless given, it is read from the environment or
+        .env (TYPESAFE_COST_RATE) and has no default.
         """
-        if price_per_million_input_tokens is None:
-            price_per_million_input_tokens = get_spend_setting(PRICE_ENV)
+        if cost_rate is None:
+            cost_rate = get_spend_setting(COST_RATE_ENV)
         return cls(
             api_key=api_key,
             endpoint=cfg["endpoint"],
             model=cfg["model"],
-            price_per_million_input_tokens=price_per_million_input_tokens,
+            cost_rate=cost_rate,
             max_retries=cfg["max_retries"],
             backoff_base_seconds=cfg["backoff_base_seconds"],
             request_timeout_seconds=cfg["request_timeout_seconds"],
@@ -379,7 +379,7 @@ class JevClient:
         status = int(response.status_code)
 
         def fail(message: str, input_tokens: int = 0, output_tokens: int = 0) -> JevResponseError:
-            cost = input_tokens * self.price_per_million_input_tokens / 1_000_000
+            cost = input_tokens * self.cost_rate / 1_000_000
             record(
                 attempt=attempt, outcome="invalid_response", http_status=status,
                 input_tokens=input_tokens, output_tokens=output_tokens, cost_usd=cost,
@@ -420,7 +420,7 @@ class JevClient:
                 )
             answers[qid] = float(value)
 
-        cost = input_tokens * self.price_per_million_input_tokens / 1_000_000
+        cost = input_tokens * self.cost_rate / 1_000_000
         model_reported = body.get("model")
         record(
             attempt=attempt, outcome="ok", http_status=status,

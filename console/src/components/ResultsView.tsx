@@ -2,7 +2,7 @@ import { LABELS, SYSTEM_IDS, SYSTEM_NAMES } from "../api";
 import type { ApRow, BudgetRow, Label, ResultsPayload, SystemId } from "../api";
 import { f3, formatCount, joinList, words } from "../format";
 import { useElementWidth, useReducedMotion } from "../hooks";
-import { apFinding, budgetFinding, budgetHeadline } from "../narrative";
+import { apFinding, budgetFinding, budgetHeadline, budgetStatusNote } from "../narrative";
 import { CHART_MARGIN, layoutBudgetLabels } from "../chartLabels";
 import { apAxisMax, budgetLevels } from "../scales";
 import { SYSTEM_COLOUR, systemStyle } from "../theme";
@@ -178,6 +178,7 @@ export function ResultsView({ results }: { results: ResultsPayload | null | unde
   const differences = results?.ap_differences;
   const levels = budget.state === "ok" ? budgetLevels(budget.data, BUDGET_METRIC) : [];
   const finding = budget.state === "ok" ? budgetFinding(budget.data, BUDGET_METRIC) : "";
+  const statusNote = budget.state === "ok" ? budgetStatusNote(budget.data, BUDGET_METRIC) : "";
   const apText = differences === undefined ? "" : apFinding(differences, LABELS as readonly Label[]);
 
   return (
@@ -205,7 +206,7 @@ export function ResultsView({ results }: { results: ResultsPayload | null | unde
         <p className="sub">
           Share of comments with a rare label (threat, severe toxic, identity hate) caught when moderators review
           only the top-scored {levels.length === 0 ? "" : `${levels[0]}% to ${levels[levels.length - 1]}% `}of
-          traffic. {finding}
+          traffic. {finding} {statusNote}
         </p>
         <SystemKey />
         {renderPart(budget, (rows) => (

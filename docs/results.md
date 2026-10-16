@@ -1,6 +1,6 @@
 # Results
 
-This document reports what happened when the frozen protocol was applied once to the official labeled Jigsaw test set (63,978 comments; 9.76% contain at least one toxic label). Every number below comes from `docs/results_tables.md`, which is generated from the committed files in `artifacts/metrics/`. Nothing was tuned after the test run. Where a result is negative, it is reported as found.
+This document reports what happened when the frozen protocol was applied to the official labeled Jigsaw test set (63,978 comments; 9.76% contain at least one toxic label). The tables in `docs/results_tables.md` are generated from the committed files in `artifacts/metrics/`; except where a section says otherwise (for example the call counts in section 8), the numbers below are taken from those tables and files. No model, calibrator, question set or threshold from the frozen protocol was changed after the test run. Amendment 3 (the moderation policy) was written after the test run, using validation data only, and is reported in `docs/results_policy.md`. JEV was queried a second time on a 5,000-comment test subset (section 7). Where a result is negative, it is reported as found.
 
 Terms used throughout:
 
@@ -10,9 +10,9 @@ Terms used throughout:
 
 ## Summary
 
-1. **Ranking quality: JEV did not match either trained baseline.** Mean AP was 0.527 for JEV, 0.583 for logistic regression and 0.677 for DistilBERT. JEV is significantly lower than both on toxic, obscene and insult.
-2. **On the two scarcest labels, JEV is statistically indistinguishable from the baselines.** For severe_toxic and threat, the paired intervals against both baselines include zero. JEV is also indistinguishable from logistic regression on identity_hate.
-3. **Under a tight human-review budget, JEV finds more rare-label comments.** At 1% and 2% of traffic reviewed, JEV recovers more rare-label positives than either baseline. Against DistilBERT this was the pattern seen on validation, and it held on test; against logistic regression JEV was level on validation, so the advantage over it is a new, descriptive observation from test. At a 5% budget JEV is ahead of DistilBERT but level with logistic regression, and at 10% and above both baselines are ahead.
+1. **Ranking quality: JEV did not match either trained baseline.** Mean AP was 0.527 for JEV, 0.583 for logistic regression and 0.677 for DistilBERT. On toxic, obscene and insult, the paired 95% intervals for JEV minus each baseline exclude zero and lie below it.
+2. **On the two scarcest labels, the test set cannot separate JEV from the baselines.** For severe_toxic and threat, the paired intervals against both baselines include zero, and so does the interval against logistic regression on identity_hate. No significance test was run; the paired bootstrap intervals are the evidence.
+3. **Under a tight human-review budget, JEV finds more rare-label comments.** At 1% and 2% of traffic reviewed, JEV recovers more rare-label positives than either baseline. Against DistilBERT this was the pattern seen on validation, and it held on test (status in `review_budget_test.csv`: hypothesis generated on validation); against logistic regression JEV was level on validation, so the advantage over it is a new, descriptive observation from test. At a 5% budget (pre-specified contrasts) JEV is ahead of DistilBERT (+0.071 [0.046, 0.101]) and its interval against logistic regression includes zero (−0.014 [−0.038, 0.016]). At a 10% budget (pre-specified) both baselines are ahead of JEV, and at 20% (descriptive) both baselines are also ahead.
 4. **Probabilities are usable after calibration, but not better than the baselines'.** Raw JEV probabilities are poorly calibrated (mean Brier 0.066). After calibration fitted on validation data they are close to the baselines (0.023 against 0.020 and 0.019).
 5. **A supervised stack on JEV's six outputs did not help.** The +0.04 mean AP gain seen on validation did not transfer; on test the gain is +0.009 and the interval includes zero.
 6. **JEV is stable between runs and moderately fast, and DistilBERT is slow on CPU.** The model returns slightly different probabilities on repeat calls, but this changes no conclusion.
@@ -52,7 +52,7 @@ Paired differences for JEV (95% interval):
 | insult | −0.157 [−0.173, −0.141] | −0.245 [−0.259, −0.232] |
 | identity_hate | −0.012 [−0.060, 0.038] | −0.222 [−0.262, −0.180] |
 
-The pattern follows label frequency. JEV loses clearly on the three common labels and is competitive on the rare ones. Because severe_toxic and threat have only 367 and 211 positives, their intervals are wide; "indistinguishable" here means the test set cannot separate the systems, not that they are equal.
+JEV is clearly behind both baselines on the three most frequent labels (toxic, obscene, insult). On the rare labels the picture differs by label: on severe_toxic and threat the intervals against both baselines include zero; on identity_hate the interval against logistic regression includes zero (−0.012 [−0.060, 0.038]), but against DistilBERT JEV is clearly behind (−0.222 [−0.262, −0.180]). Because severe_toxic and threat have only 367 and 211 positives, their intervals are wide; an interval that includes zero means the test set cannot separate the systems, not that they are equal.
 
 ## 3. Decisions at a threshold
 
@@ -67,7 +67,7 @@ Thresholds were fitted on validation data and applied unchanged to test. The tab
 
 The macro gap between JEV and logistic regression is small (0.529 against 0.549); the micro gap is larger because micro F1 is dominated by the frequent labels. On threat, JEV has the highest F1 of the four systems (0.584 against 0.457 for logistic regression and 0.550 for DistilBERT).
 
-With a fixed 0.5 threshold instead, JEV's macro F1 falls to 0.405 and its severe_toxic F1 is 0.000, because its probabilities for that label rarely exceed 0.5. This is why validation-fitted thresholds are part of the protocol.
+With a fixed 0.5 threshold instead, JEV's macro F1 falls to 0.405 and its severe_toxic F1 is 0.000, because its calibrated probabilities for that label never reach 0.5 (the calibrator's largest output for severe_toxic is 0.417), even though raw JEV probabilities for that label are at or above 0.5 for 3,791 of the 63,978 test comments. This is why validation-fitted thresholds are part of the protocol.
 
 ## 4. Calibration
 
@@ -138,7 +138,7 @@ Per-label changes on this sample are noisy because the sample holds only 25 thre
 | DistilBERT (CPU) | 40.8 ms | 147.6 ms | 7.1 comments/s (batch 32) |
 | JEV (API) | 363 ms | 686 ms | not measured |
 
-All local timings were taken on a single Intel CPU (as recorded in `latency_cost.csv`), 500 comments per system. The JEV latency row was computed from the call log before the test run: it pools the 72,246 successful requests recorded up to then (the pilot and the validation runs of all three question sets, including calls made during question-set selection) and excludes the test run and the second pass. JEV latency depends on the network, the provider's load and concurrent requests at the time. One request scores one comment, so the final test run made 63,978 requests for 63,978 comments. In total the call log holds 141,183 successful JEV calls (the pilot, the validation runs, the test run and the second pass), made under a pre-set hard spending cap; spend was tracked per call, and no price or dollar figure is published.
+All local timings were taken on a single Intel CPU (as recorded in `latency_cost.csv`), 500 comments per system. The JEV latency row was computed from the call log before the test run: it pools the 72,246 successful requests recorded up to then (the pilot and the validation runs of all three question sets, including calls made during question-set selection) and excludes the test run and the second pass. JEV latency depends on the network, the provider's load and concurrent requests at the time. One request scores one comment, and the test run scored each of the 63,978 comments (the cache is keyed by normalized text, so identical texts are not queried twice). Across all runs (pilot, validation, test and second pass) JEV scoring made roughly 141,000 successful calls; the exact count comes from a call log that is not published. The batch runs were made under a pre-set hard spending cap, and no price or dollar figure is published.
 
 ## 9. Where JEV fails and where it helps (validation, qualitative)
 
@@ -160,5 +160,5 @@ The question wording was not edited after this review.
 - F1 values have no intervals.
 - Jigsaw labels are noisy, and part of JEV's measured gap may reflect label definitions that differ from the questions it is asked.
 - The drop in every system's score from validation to test is unexplained.
-- Latency was measured on one machine; throughput for DistilBERT would be much higher on a GPU.
+- Latency was measured on one machine, on CPU only.
 - Comments were sent to a third-party API during the JEV runs.

@@ -49,7 +49,7 @@ def make_client(session: FakeSession) -> JevClient:
         api_key="test-key",
         endpoint="https://example.invalid",
         model="jev-1.13.0",
-        price_per_million_input_tokens=0.5,
+        cost_rate=0.5,
         max_retries=1,
         backoff_base_seconds=0.0,
         session=session,

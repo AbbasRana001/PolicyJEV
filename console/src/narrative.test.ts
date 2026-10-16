@@ -9,6 +9,7 @@ import {
   apFinding,
   budgetFinding,
   budgetHeadline,
+  budgetStatusNote,
   comparisonNote,
   automationFootnote,
   policyTargets,
@@ -292,9 +293,17 @@ describe("budgetFinding and budgetHeadline", () => {
   });
 
   it("states the lead in the heading only when JEV is ahead of both at the smallest budget", () => {
-    expect(budgetHeadline(rows, "recall_rare")).toBe("JEV finds more rare-label comments only at the smallest review budgets");
+    expect(budgetHeadline(rows, "recall_rare")).toBe("JEV has higher rare-label recall only at the smallest review budgets");
     const behind = rows.map((row) => (row.budget_pct === 1 ? { ...row, lo: -0.2, hi: -0.1 } : row));
     expect(budgetHeadline(behind, "recall_rare")).toBe("Recall of rare-label comments as the review budget grows");
+  });
+
+  it("states from the status column which budgets were not pre-specified, and nothing when the statuses differ", () => {
+    const real = payload.review_budget ?? [];
+    expect(budgetStatusNote(real, "recall_rare")).toBe(
+      "The 1% and 2% comparisons were not pre-specified: against logistic regression the difference is descriptive, and against DistilBERT it is a hypothesis generated on validation. Only the 5% and 10% contrasts were pre-specified.",
+    );
+    expect(budgetStatusNote(rows, "recall_rare")).toBe("");
   });
 
   it("mentions every budget of the real data once", () => {
@@ -349,9 +358,9 @@ describe("wording that must stay true for everything it covers", () => {
 
   it("states how the thresholds held on the test set from the precision rows (one sentence for the Score page)", () => {
     const sentence = thresholdsOnTestSentence(perLabel);
-    expect(sentence).toBe("Thresholds were fitted on validation data and did not hold on the test set: precision of automatic action fell on toxic and obscene for all three systems.");
+    expect(sentence).toBe("Thresholds were fitted on validation data, and its validation targets were missed on the test set: precision of automatic action fell on toxic and obscene for all three systems.");
     expect(thresholdsOnTestSentence(undefined)).toContain("shown on the Policy page");
-    expect(thresholdsOnTestSentence([])).not.toContain("did not hold");
+    expect(thresholdsOnTestSentence([])).not.toContain("missed");
   });
 
   const budgetRows = (leads: boolean[]): BudgetRow[] =>
@@ -362,8 +371,8 @@ describe("wording that must stay true for everything it covers", () => {
     );
 
   it("claims a lead at every budget only if there is one at every budget, and only at the smallest if it ends", () => {
-    expect(budgetHeadline(budgetRows([true, true, true]), "recall_rare")).toBe("JEV finds more rare-label comments at every review budget");
-    expect(budgetHeadline(budgetRows([true, true, false]), "recall_rare")).toBe("JEV finds more rare-label comments only at the smallest review budgets");
+    expect(budgetHeadline(budgetRows([true, true, true]), "recall_rare")).toBe("JEV has higher rare-label recall at every review budget");
+    expect(budgetHeadline(budgetRows([true, true, false]), "recall_rare")).toBe("JEV has higher rare-label recall only at the smallest review budgets");
     expect(budgetHeadline(budgetRows([false, true, true]), "recall_rare")).toBe("Recall of rare-label comments as the review budget grows");
     expect(budgetHeadline(budgetRows([true, false, true]), "recall_rare")).toBe("Recall of rare-label comments as the review budget grows");
   });

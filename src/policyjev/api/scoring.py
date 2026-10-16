@@ -181,8 +181,8 @@ class JevScorer(Scorer):
                 cfg = load_config()["jev"]
                 with self._questions_path.open("r", encoding="utf-8") as f:
                     self._questions = build_questions(yaml.safe_load(f)["questions"])
-                # the live path records nothing, so no price is needed
-                self._client = JevClient.from_config(cfg, self._key_loader(), price_per_million_input_tokens=0.0)
+                # the live path records nothing, so no cost rate is needed
+                self._client = JevClient.from_config(cfg, self._key_loader(), cost_rate=0.0)
         result = self._client.evaluate(text, self._questions)
         return [float(result.answers[label]) for label in LABELS]
 

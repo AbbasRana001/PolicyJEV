@@ -100,6 +100,7 @@ describe("recall of the rare labels against the review budget", () => {
     const levels = budgetLevels(results.review_budget ?? [], BUDGET_METRIC);
     expect(screen.getByText(new RegExp(`top-scored ${levels[0]}% to ${levels[levels.length - 1]}% of traffic`))).toBeTruthy();
     expect(screen.getByText(/JEV leads both baselines at/)).toBeTruthy();
+    expect(screen.getByText(/comparisons were not pre-specified/)).toBeTruthy();
   });
 });
 
@@ -121,6 +122,6 @@ describe("when data is missing", () => {
 
   it("does not claim a lead for JEV in the heading without the data", () => {
     render(<ResultsView results={undefined} />);
-    expect(screen.queryByText(/JEV finds more/)).toBeNull();
+    expect(screen.queryByText(/JEV has higher rare-label recall/)).toBeNull();
   });
 });

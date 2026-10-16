@@ -144,14 +144,14 @@ export function precisionGroups(rows: readonly PolicyLabelRow[]): PrecisionGroup
   return { byLabel, fell, held, mixed, systemCount: new Set(rows.map((row) => row.system)).size };
 }
 
-/** One sentence for the Score page: the thresholds did not hold on the test set, in the words of the results. */
+/** One sentence for the Score page: the validation targets were missed on the test set, in the words of the results. */
 export function thresholdsOnTestSentence(rows: readonly PolicyLabelRow[] | undefined): string {
   const base = "Thresholds were fitted on validation data";
   if (rows === undefined) return `${base}; how they held on the test set is shown on the Policy page.`;
   const { fell, byLabel, systemCount } = precisionGroups(rows);
   if (fell.length === 0) return `${base}; how they held on the test set is shown on the Policy page.`;
   const everySystem = fell.every((label) => (byLabel.get(label)?.length ?? 0) === systemCount);
-  return `${base} and did not hold on the test set: precision of automatic action fell on ${joinList(fell.map(words))} ${
+  return `${base}, and its validation targets were missed on the test set: precision of automatic action fell on ${joinList(fell.map(words))} ${
     everySystem ? `for all ${systemCount === 3 ? "three" : systemCount} systems` : "where it is on"
   }.`;
 }
@@ -325,6 +325,24 @@ export function budgetFinding(rows: readonly BudgetRow[], metric: string): strin
     .join(" ");
 }
 
+/**
+ * The status caveat for the review-budget finding, read from the status column of the paired differences:
+ * which budgets were not pre-specified (and why) and which were. Empty if the rows carry other statuses.
+ */
+export function budgetStatusNote(rows: readonly BudgetRow[], metric: string): string {
+  const budgets = [...new Set(rows.filter((row) => row.metric === metric).map((row) => row.budget_pct))].sort((a, b) => a - b);
+  const status = (budget: number, contrast: string): string | undefined =>
+    rows.find((row) => row.metric === metric && row.budget_pct === budget && row.comparison === contrast)?.status;
+  const lr = BASELINES[0]?.contrast ?? "";
+  const db = BASELINES[1]?.contrast ?? "";
+  const notPrespecified = budgets.filter((b) => status(b, lr) === "descriptive" && status(b, db) === "hypothesis generated on validation");
+  if (notPrespecified.length === 0) return "";
+  const prespecified = budgets.filter((b) => status(b, lr) === "pre-specified" && status(b, db) === "pre-specified");
+  const at = (list: number[]): string => joinList(list.map((b) => `${b}%`));
+  const only = prespecified.length > 0 ? ` Only the ${at(prespecified)} contrasts were pre-specified.` : "";
+  return `The ${at(notPrespecified)} comparisons were not pre-specified: against logistic regression the difference is descriptive, and against DistilBERT it is a hypothesis generated on validation.${only}`;
+}
+
 /** Recall and precision targets shared by all rows, or null if they are missing. */
 export function policyTargets(rows: readonly PolicyLabelRow[] | undefined): { recall: number; precision: number } | null {
   const row = rows?.find((item) => item.recall_target !== null && item.precision_target !== null);
@@ -349,6 +367,6 @@ export function budgetHeadline(rows: readonly BudgetRow[], metric: string): stri
   const laterAhead = aheadOfBoth.slice(prefix).some(Boolean);
   if (prefix === 0 || laterAhead) return "Recall of rare-label comments as the review budget grows";
   return prefix === aheadOfBoth.length
-    ? "JEV finds more rare-label comments at every review budget"
-    : "JEV finds more rare-label comments only at the smallest review budgets";
+    ? "JEV has higher rare-label recall at every review budget"
+    : "JEV has higher rare-label recall only at the smallest review budgets";
 }
