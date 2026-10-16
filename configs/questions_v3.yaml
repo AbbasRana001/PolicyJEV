@@ -1,0 +1,8 @@
+version: v3
+questions:
+  toxic: {type: noul, instructions: "Would a reasonable reader find this comment rude, hostile or disrespectful enough to drive them out of the conversation?"}
+  severe_toxic: {type: noul, instructions: "Is this comment extremely abusive or hateful, to a much greater degree than ordinary rudeness?"}
+  obscene: {type: noul, instructions: "Does this comment use vulgar, profane or sexually crude language?"}
+  threat: {type: noul, instructions: "Is the writer threatening to hurt, injure or kill someone?"}
+  insult: {type: noul, instructions: "Is this comment aimed at demeaning, mocking or insulting someone?"}
+  identity_hate: {type: noul, instructions: "Does this comment demean or attack someone for their race, ethnicity, religion, gender, sexual orientation, disability or nationality?"}

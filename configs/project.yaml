@@ -1,0 +1,46 @@
+# Fixed experiment settings. Values are frozen once experiments start;
+# any later change is recorded in docs/decisions.md.
+seed: 42
+labels: [toxic, severe_toxic, obscene, threat, insult, identity_hate]
+split:
+  validation_fraction: 0.15
+bootstrap:
+  n_resamples: 1000
+  confidence_level: 0.95
+baselines:
+  logreg:
+    c_grid: [1, 2, 4, 8, 16]
+    word_ngrams: [1, 2]
+    min_df: 3
+    max_features: 200000
+    char_ngrams: false
+    n_jobs: -1
+distilbert:
+  checkpoint: distilbert-base-uncased
+  max_length: 256
+  epochs: 3
+  batch_size: 32
+  eval_batch_size: 128
+  learning_rate: 2.0e-5
+  weight_decay: 0.01
+  warmup_ratio: 0.06
+  max_grad_norm: 1.0
+thresholds:
+  grid_step: 0.01
+jev:
+  endpoint: https://api.typesafe.ai/v1/systemone
+  model: jev-1.13.0
+  max_retries: 5
+  backoff_base_seconds: 1.0
+  request_timeout_seconds: 30
+  max_workers: 16
+  cache_path: artifacts/cache/jev.sqlite
+  pilot_size: 150
+  primary_question_version: v2
+  second_pass_rows: 5000
+  second_pass_seed_offset: 11
+calibration:
+  method:
+    logreg_word: isotonic
+    distilbert: platt
+    jev: isotonic

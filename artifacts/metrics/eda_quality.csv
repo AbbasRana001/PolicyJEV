@@ -1,0 +1,6 @@
+check,count
+empty_or_whitespace_comments,0
+duplicate_texts_in_train,375
+duplicate_groups_with_conflicting_labels,34
+severe_toxic_without_toxic,0
+validation_rows_with_text_also_in_train,56

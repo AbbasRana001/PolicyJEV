@@ -1,0 +1,51 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/
+*.egg-info/
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Raw data (never committed)
+data/raw/
+
+# Databases (the JEV cache stores comment text)
+*.sqlite
+*.db
+
+# Model weights
+*.pt
+*.safetensors
+artifacts/models/
+
+# Node
+node_modules/
+web/dist/
+
+# OS and editors
+Thumbs.db
+.DS_Store
+.vscode/
+.idea/
+
+*.sqlite-wal
+*.sqlite-shm
+
+# Console
+console/node_modules/
+console/dist/
+console/.shots/
+console/design/
+console/e2e/out/
+
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.log
+console/*.tsbuildinfo

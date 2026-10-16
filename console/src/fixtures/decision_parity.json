@@ -1,0 +1,1571 @@
+{
+ "thresholds": [
+  {
+   "system": "logreg_word",
+   "label": "toxic",
+   "low": 0.095371669,
+   "high": 0.65714286,
+   "action_enabled": true
+  },
+  {
+   "system": "logreg_word",
+   "label": "severe_toxic",
+   "low": 0.015151515,
+   "high": null,
+   "action_enabled": false
+  },
+  {
+   "system": "logreg_word",
+   "label": "obscene",
+   "low": 0.12980769,
+   "high": 0.69655172,
+   "action_enabled": true
+  },
+  {
+   "system": "logreg_word",
+   "label": "threat",
+   "low": 0.019417476,
+   "high": null,
+   "action_enabled": false
+  },
+  {
+   "system": "logreg_word",
+   "label": "insult",
+   "low": 0.097959184,
+   "high": 0.85106383,
+   "action_enabled": true
+  },
+  {
+   "system": "logreg_word",
+   "label": "identity_hate",
+   "low": 0.0095628415,
+   "high": null,
+   "action_enabled": false
+  },
+  {
+   "system": "distilbert",
+   "label": "toxic",
+   "low": 0.2598629313040173,
+   "high": 0.6537009870519913,
+   "action_enabled": true
+  },
+  {
+   "system": "distilbert",
+   "label": "severe_toxic",
+   "low": 0.0653785513386076,
+   "high": null,
+   "action_enabled": false
+  },
+  {
+   "system": "distilbert",
+   "label": "obscene",
+   "low": 0.311322293707601,
+   "high": 0.6703334351092975,
+   "action_enabled": true
+  },
+  {
+   "system": "distilbert",
+   "label": "threat",
+   "low": 0.0055691037334984,
+   "high": null,
+   "action_enabled": false
+  },
+  {
+   "system": "distilbert",
+   "label": "insult",
+   "low": 0.2169842143030385,
+   "high": 0.8468199008748881,
+   "action_enabled": true
+  },
+  {
+   "system": "distilbert",
+   "label": "identity_hate",
+   "low": 0.0273830065009538,
+   "high": 0.8248055587605356,
+   "action_enabled": true
+  },
+  {
+   "system": "jev",
+   "label": "toxic",
+   "low": 0.11594203,
+   "high": 0.74358974,
+   "action_enabled": true
+  },
+  {
+   "system": "jev",
+   "label": "severe_toxic",
+   "low": 0.047619048,
+   "high": null,
+   "action_enabled": false
+  },
+  {
+   "system": "jev",
+   "label": "obscene",
+   "low": 0.1440678,
+   "high": 0.85777778,
+   "action_enabled": true
+  },
+  {
+   "system": "jev",
+   "label": "threat",
+   "low": 0.057142857,
+   "high": null,
+   "action_enabled": false
+  },
+  {
+   "system": "jev",
+   "label": "insult",
+   "low": 0.087155963,
+   "high": null,
+   "action_enabled": false
+  },
+  {
+   "system": "jev",
+   "label": "identity_hate",
+   "low": 0.079754601,
+   "high": null,
+   "action_enabled": false
+  }
+ ],
+ "label_cases": [
+  {
+   "system": "distilbert",
+   "label": "toxic",
+   "p": 0.0,
+   "decision": "ALLOW"
+  },
+  {
+   "system": "distilbert",
+   "label": "toxic",
+   "p": 0.2598629313040172,
+   "decision": "ALLOW"
+  },
+  {
+   "system": "distilbert",
+   "label": "toxic",
+   "p": 0.2598629313040173,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "distilbert",
+   "label": "toxic",
+   "p": 0.25986293130401733,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "distilbert",
+   "label": "toxic",
+   "p": 0.6537009870519912,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "distilbert",
+   "label": "toxic",
+   "p": 0.6537009870519913,
+   "decision": "ACTION"
+  },
+  {
+   "system": "distilbert",
+   "label": "toxic",
+   "p": 0.6537009870519914,
+   "decision": "ACTION"
+  },
+  {
+   "system": "distilbert",
+   "label": "toxic",
+   "p": 1.0,
+   "decision": "ACTION"
+  },
+  {
+   "system": "distilbert",
+   "label": "severe_toxic",
+   "p": 0.0,
+   "decision": "ALLOW"
+  },
+  {
+   "system": "distilbert",
+   "label": "severe_toxic",
+   "p": 0.06537855133860758,
+   "decision": "ALLOW"
+  },
+  {
+   "system": "distilbert",
+   "label": "severe_toxic",
+   "p": 0.0653785513386076,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "distilbert",
+   "label": "severe_toxic",
+   "p": 0.06537855133860761,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "distilbert",
+   "label": "severe_toxic",
+   "p": 1.0,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "distilbert",
+   "label": "obscene",
+   "p": 0.0,
+   "decision": "ALLOW"
+  },
+  {
+   "system": "distilbert",
+   "label": "obscene",
+   "p": 0.31132229370760095,
+   "decision": "ALLOW"
+  },
+  {
+   "system": "distilbert",
+   "label": "obscene",
+   "p": 0.311322293707601,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "distilbert",
+   "label": "obscene",
+   "p": 0.31132229370760106,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "distilbert",
+   "label": "obscene",
+   "p": 0.6703334351092974,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "distilbert",
+   "label": "obscene",
+   "p": 0.6703334351092975,
+   "decision": "ACTION"
+  },
+  {
+   "system": "distilbert",
+   "label": "obscene",
+   "p": 0.6703334351092977,
+   "decision": "ACTION"
+  },
+  {
+   "system": "distilbert",
+   "label": "obscene",
+   "p": 1.0,
+   "decision": "ACTION"
+  },
+  {
+   "system": "distilbert",
+   "label": "threat",
+   "p": 0.0,
+   "decision": "ALLOW"
+  },
+  {
+   "system": "distilbert",
+   "label": "threat",
+   "p": 0.005569103733498399,
+   "decision": "ALLOW"
+  },
+  {
+   "system": "distilbert",
+   "label": "threat",
+   "p": 0.0055691037334984,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "distilbert",
+   "label": "threat",
+   "p": 0.005569103733498401,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "distilbert",
+   "label": "threat",
+   "p": 1.0,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "distilbert",
+   "label": "insult",
+   "p": 0.0,
+   "decision": "ALLOW"
+  },
+  {
+   "system": "distilbert",
+   "label": "insult",
+   "p": 0.21698421430303846,
+   "decision": "ALLOW"
+  },
+  {
+   "system": "distilbert",
+   "label": "insult",
+   "p": 0.2169842143030385,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "distilbert",
+   "label": "insult",
+   "p": 0.21698421430303852,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "distilbert",
+   "label": "insult",
+   "p": 0.846819900874888,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "distilbert",
+   "label": "insult",
+   "p": 0.8468199008748881,
+   "decision": "ACTION"
+  },
+  {
+   "system": "distilbert",
+   "label": "insult",
+   "p": 0.8468199008748882,
+   "decision": "ACTION"
+  },
+  {
+   "system": "distilbert",
+   "label": "insult",
+   "p": 1.0,
+   "decision": "ACTION"
+  },
+  {
+   "system": "distilbert",
+   "label": "identity_hate",
+   "p": 0.0,
+   "decision": "ALLOW"
+  },
+  {
+   "system": "distilbert",
+   "label": "identity_hate",
+   "p": 0.027383006500953797,
+   "decision": "ALLOW"
+  },
+  {
+   "system": "distilbert",
+   "label": "identity_hate",
+   "p": 0.0273830065009538,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "distilbert",
+   "label": "identity_hate",
+   "p": 0.027383006500953804,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "distilbert",
+   "label": "identity_hate",
+   "p": 0.8248055587605355,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "distilbert",
+   "label": "identity_hate",
+   "p": 0.8248055587605356,
+   "decision": "ACTION"
+  },
+  {
+   "system": "distilbert",
+   "label": "identity_hate",
+   "p": 0.8248055587605357,
+   "decision": "ACTION"
+  },
+  {
+   "system": "distilbert",
+   "label": "identity_hate",
+   "p": 1.0,
+   "decision": "ACTION"
+  },
+  {
+   "system": "jev",
+   "label": "toxic",
+   "p": 0.0,
+   "decision": "ALLOW"
+  },
+  {
+   "system": "jev",
+   "label": "toxic",
+   "p": 0.11594202999999999,
+   "decision": "ALLOW"
+  },
+  {
+   "system": "jev",
+   "label": "toxic",
+   "p": 0.11594203,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "jev",
+   "label": "toxic",
+   "p": 0.11594203000000002,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "jev",
+   "label": "toxic",
+   "p": 0.7435897399999999,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "jev",
+   "label": "toxic",
+   "p": 0.74358974,
+   "decision": "ACTION"
+  },
+  {
+   "system": "jev",
+   "label": "toxic",
+   "p": 0.7435897400000001,
+   "decision": "ACTION"
+  },
+  {
+   "system": "jev",
+   "label": "toxic",
+   "p": 1.0,
+   "decision": "ACTION"
+  },
+  {
+   "system": "jev",
+   "label": "severe_toxic",
+   "p": 0.0,
+   "decision": "ALLOW"
+  },
+  {
+   "system": "jev",
+   "label": "severe_toxic",
+   "p": 0.04761904799999999,
+   "decision": "ALLOW"
+  },
+  {
+   "system": "jev",
+   "label": "severe_toxic",
+   "p": 0.047619048,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "jev",
+   "label": "severe_toxic",
+   "p": 0.047619048000000004,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "jev",
+   "label": "severe_toxic",
+   "p": 1.0,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "jev",
+   "label": "obscene",
+   "p": 0.0,
+   "decision": "ALLOW"
+  },
+  {
+   "system": "jev",
+   "label": "obscene",
+   "p": 0.14406779999999997,
+   "decision": "ALLOW"
+  },
+  {
+   "system": "jev",
+   "label": "obscene",
+   "p": 0.1440678,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "jev",
+   "label": "obscene",
+   "p": 0.14406780000000002,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "jev",
+   "label": "obscene",
+   "p": 0.8577777799999999,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "jev",
+   "label": "obscene",
+   "p": 0.85777778,
+   "decision": "ACTION"
+  },
+  {
+   "system": "jev",
+   "label": "obscene",
+   "p": 0.8577777800000002,
+   "decision": "ACTION"
+  },
+  {
+   "system": "jev",
+   "label": "obscene",
+   "p": 1.0,
+   "decision": "ACTION"
+  },
+  {
+   "system": "jev",
+   "label": "threat",
+   "p": 0.0,
+   "decision": "ALLOW"
+  },
+  {
+   "system": "jev",
+   "label": "threat",
+   "p": 0.05714285699999999,
+   "decision": "ALLOW"
+  },
+  {
+   "system": "jev",
+   "label": "threat",
+   "p": 0.057142857,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "jev",
+   "label": "threat",
+   "p": 0.057142857000000005,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "jev",
+   "label": "threat",
+   "p": 1.0,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "jev",
+   "label": "insult",
+   "p": 0.0,
+   "decision": "ALLOW"
+  },
+  {
+   "system": "jev",
+   "label": "insult",
+   "p": 0.08715596299999999,
+   "decision": "ALLOW"
+  },
+  {
+   "system": "jev",
+   "label": "insult",
+   "p": 0.087155963,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "jev",
+   "label": "insult",
+   "p": 0.08715596300000002,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "jev",
+   "label": "insult",
+   "p": 1.0,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "jev",
+   "label": "identity_hate",
+   "p": 0.0,
+   "decision": "ALLOW"
+  },
+  {
+   "system": "jev",
+   "label": "identity_hate",
+   "p": 0.07975460099999998,
+   "decision": "ALLOW"
+  },
+  {
+   "system": "jev",
+   "label": "identity_hate",
+   "p": 0.079754601,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "jev",
+   "label": "identity_hate",
+   "p": 0.07975460100000001,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "jev",
+   "label": "identity_hate",
+   "p": 1.0,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "logreg_word",
+   "label": "toxic",
+   "p": 0.0,
+   "decision": "ALLOW"
+  },
+  {
+   "system": "logreg_word",
+   "label": "toxic",
+   "p": 0.09537166899999999,
+   "decision": "ALLOW"
+  },
+  {
+   "system": "logreg_word",
+   "label": "toxic",
+   "p": 0.095371669,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "logreg_word",
+   "label": "toxic",
+   "p": 0.09537166900000002,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "logreg_word",
+   "label": "toxic",
+   "p": 0.6571428599999999,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "logreg_word",
+   "label": "toxic",
+   "p": 0.65714286,
+   "decision": "ACTION"
+  },
+  {
+   "system": "logreg_word",
+   "label": "toxic",
+   "p": 0.6571428600000001,
+   "decision": "ACTION"
+  },
+  {
+   "system": "logreg_word",
+   "label": "toxic",
+   "p": 1.0,
+   "decision": "ACTION"
+  },
+  {
+   "system": "logreg_word",
+   "label": "severe_toxic",
+   "p": 0.0,
+   "decision": "ALLOW"
+  },
+  {
+   "system": "logreg_word",
+   "label": "severe_toxic",
+   "p": 0.015151514999999999,
+   "decision": "ALLOW"
+  },
+  {
+   "system": "logreg_word",
+   "label": "severe_toxic",
+   "p": 0.015151515,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "logreg_word",
+   "label": "severe_toxic",
+   "p": 0.015151515000000003,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "logreg_word",
+   "label": "severe_toxic",
+   "p": 1.0,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "logreg_word",
+   "label": "obscene",
+   "p": 0.0,
+   "decision": "ALLOW"
+  },
+  {
+   "system": "logreg_word",
+   "label": "obscene",
+   "p": 0.12980768999999998,
+   "decision": "ALLOW"
+  },
+  {
+   "system": "logreg_word",
+   "label": "obscene",
+   "p": 0.12980769,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "logreg_word",
+   "label": "obscene",
+   "p": 0.12980769000000003,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "logreg_word",
+   "label": "obscene",
+   "p": 0.6965517199999999,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "logreg_word",
+   "label": "obscene",
+   "p": 0.69655172,
+   "decision": "ACTION"
+  },
+  {
+   "system": "logreg_word",
+   "label": "obscene",
+   "p": 0.6965517200000001,
+   "decision": "ACTION"
+  },
+  {
+   "system": "logreg_word",
+   "label": "obscene",
+   "p": 1.0,
+   "decision": "ACTION"
+  },
+  {
+   "system": "logreg_word",
+   "label": "threat",
+   "p": 0.0,
+   "decision": "ALLOW"
+  },
+  {
+   "system": "logreg_word",
+   "label": "threat",
+   "p": 0.019417475999999996,
+   "decision": "ALLOW"
+  },
+  {
+   "system": "logreg_word",
+   "label": "threat",
+   "p": 0.019417476,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "logreg_word",
+   "label": "threat",
+   "p": 0.019417476000000003,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "logreg_word",
+   "label": "threat",
+   "p": 1.0,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "logreg_word",
+   "label": "insult",
+   "p": 0.0,
+   "decision": "ALLOW"
+  },
+  {
+   "system": "logreg_word",
+   "label": "insult",
+   "p": 0.09795918399999999,
+   "decision": "ALLOW"
+  },
+  {
+   "system": "logreg_word",
+   "label": "insult",
+   "p": 0.097959184,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "logreg_word",
+   "label": "insult",
+   "p": 0.09795918400000002,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "logreg_word",
+   "label": "insult",
+   "p": 0.8510638299999999,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "logreg_word",
+   "label": "insult",
+   "p": 0.85106383,
+   "decision": "ACTION"
+  },
+  {
+   "system": "logreg_word",
+   "label": "insult",
+   "p": 0.8510638300000001,
+   "decision": "ACTION"
+  },
+  {
+   "system": "logreg_word",
+   "label": "insult",
+   "p": 1.0,
+   "decision": "ACTION"
+  },
+  {
+   "system": "logreg_word",
+   "label": "identity_hate",
+   "p": 0.0,
+   "decision": "ALLOW"
+  },
+  {
+   "system": "logreg_word",
+   "label": "identity_hate",
+   "p": 0.009562841499999999,
+   "decision": "ALLOW"
+  },
+  {
+   "system": "logreg_word",
+   "label": "identity_hate",
+   "p": 0.0095628415,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "logreg_word",
+   "label": "identity_hate",
+   "p": 0.009562841500000002,
+   "decision": "HUMAN REVIEW"
+  },
+  {
+   "system": "logreg_word",
+   "label": "identity_hate",
+   "p": 1.0,
+   "decision": "HUMAN REVIEW"
+  }
+ ],
+ "comment_cases": [
+  {
+   "system": "distilbert",
+   "probabilities": {
+    "toxic": 0.2598629313040172,
+    "severe_toxic": 0.06537855133860758,
+    "obscene": 0.31132229370760095,
+    "threat": 0.005569103733498399,
+    "insult": 0.21698421430303846,
+    "identity_hate": 0.027383006500953797
+   },
+   "decision": "ALLOW",
+   "triggering_labels": []
+  },
+  {
+   "system": "distilbert",
+   "probabilities": {
+    "toxic": 0.2598629313040173,
+    "severe_toxic": 0.0653785513386076,
+    "obscene": 0.311322293707601,
+    "threat": 0.0055691037334984,
+    "insult": 0.2169842143030385,
+    "identity_hate": 0.0273830065009538
+   },
+   "decision": "HUMAN REVIEW",
+   "triggering_labels": [
+    "toxic",
+    "severe_toxic",
+    "obscene",
+    "threat",
+    "insult",
+    "identity_hate"
+   ]
+  },
+  {
+   "system": "distilbert",
+   "probabilities": {
+    "toxic": 1.0,
+    "severe_toxic": 1.0,
+    "obscene": 1.0,
+    "threat": 1.0,
+    "insult": 1.0,
+    "identity_hate": 1.0
+   },
+   "decision": "ACTION",
+   "triggering_labels": [
+    "toxic",
+    "obscene",
+    "insult",
+    "identity_hate"
+   ]
+  },
+  {
+   "system": "distilbert",
+   "probabilities": {
+    "toxic": 0.2598629313040173,
+    "severe_toxic": 0.06537855133860758,
+    "obscene": 0.31132229370760095,
+    "threat": 0.005569103733498399,
+    "insult": 0.21698421430303846,
+    "identity_hate": 0.027383006500953797
+   },
+   "decision": "HUMAN REVIEW",
+   "triggering_labels": [
+    "toxic"
+   ]
+  },
+  {
+   "system": "distilbert",
+   "probabilities": {
+    "toxic": 0.6537009870519912,
+    "severe_toxic": 0.0653785513386076,
+    "obscene": 0.311322293707601,
+    "threat": 0.0055691037334984,
+    "insult": 0.2169842143030385,
+    "identity_hate": 0.0273830065009538
+   },
+   "decision": "HUMAN REVIEW",
+   "triggering_labels": [
+    "toxic",
+    "severe_toxic",
+    "obscene",
+    "threat",
+    "insult",
+    "identity_hate"
+   ]
+  },
+  {
+   "system": "distilbert",
+   "probabilities": {
+    "toxic": 0.6537009870519913,
+    "severe_toxic": 0.06537855133860758,
+    "obscene": 0.31132229370760095,
+    "threat": 0.005569103733498399,
+    "insult": 0.21698421430303846,
+    "identity_hate": 0.027383006500953797
+   },
+   "decision": "ACTION",
+   "triggering_labels": [
+    "toxic"
+   ]
+  },
+  {
+   "system": "distilbert",
+   "probabilities": {
+    "toxic": 0.2598629313040172,
+    "severe_toxic": 0.0653785513386076,
+    "obscene": 0.31132229370760095,
+    "threat": 0.005569103733498399,
+    "insult": 0.21698421430303846,
+    "identity_hate": 0.027383006500953797
+   },
+   "decision": "HUMAN REVIEW",
+   "triggering_labels": [
+    "severe_toxic"
+   ]
+  },
+  {
+   "system": "distilbert",
+   "probabilities": {
+    "toxic": 0.2598629313040172,
+    "severe_toxic": 0.06537855133860758,
+    "obscene": 0.311322293707601,
+    "threat": 0.005569103733498399,
+    "insult": 0.21698421430303846,
+    "identity_hate": 0.027383006500953797
+   },
+   "decision": "HUMAN REVIEW",
+   "triggering_labels": [
+    "obscene"
+   ]
+  },
+  {
+   "system": "distilbert",
+   "probabilities": {
+    "toxic": 0.2598629313040173,
+    "severe_toxic": 0.0653785513386076,
+    "obscene": 0.6703334351092974,
+    "threat": 0.0055691037334984,
+    "insult": 0.2169842143030385,
+    "identity_hate": 0.0273830065009538
+   },
+   "decision": "HUMAN REVIEW",
+   "triggering_labels": [
+    "toxic",
+    "severe_toxic",
+    "obscene",
+    "threat",
+    "insult",
+    "identity_hate"
+   ]
+  },
+  {
+   "system": "distilbert",
+   "probabilities": {
+    "toxic": 0.2598629313040172,
+    "severe_toxic": 0.06537855133860758,
+    "obscene": 0.6703334351092975,
+    "threat": 0.005569103733498399,
+    "insult": 0.21698421430303846,
+    "identity_hate": 0.027383006500953797
+   },
+   "decision": "ACTION",
+   "triggering_labels": [
+    "obscene"
+   ]
+  },
+  {
+   "system": "distilbert",
+   "probabilities": {
+    "toxic": 0.2598629313040172,
+    "severe_toxic": 0.06537855133860758,
+    "obscene": 0.31132229370760095,
+    "threat": 0.0055691037334984,
+    "insult": 0.21698421430303846,
+    "identity_hate": 0.027383006500953797
+   },
+   "decision": "HUMAN REVIEW",
+   "triggering_labels": [
+    "threat"
+   ]
+  },
+  {
+   "system": "distilbert",
+   "probabilities": {
+    "toxic": 0.2598629313040172,
+    "severe_toxic": 0.06537855133860758,
+    "obscene": 0.31132229370760095,
+    "threat": 0.005569103733498399,
+    "insult": 0.2169842143030385,
+    "identity_hate": 0.027383006500953797
+   },
+   "decision": "HUMAN REVIEW",
+   "triggering_labels": [
+    "insult"
+   ]
+  },
+  {
+   "system": "distilbert",
+   "probabilities": {
+    "toxic": 0.2598629313040173,
+    "severe_toxic": 0.0653785513386076,
+    "obscene": 0.311322293707601,
+    "threat": 0.0055691037334984,
+    "insult": 0.846819900874888,
+    "identity_hate": 0.0273830065009538
+   },
+   "decision": "HUMAN REVIEW",
+   "triggering_labels": [
+    "toxic",
+    "severe_toxic",
+    "obscene",
+    "threat",
+    "insult",
+    "identity_hate"
+   ]
+  },
+  {
+   "system": "distilbert",
+   "probabilities": {
+    "toxic": 0.2598629313040172,
+    "severe_toxic": 0.06537855133860758,
+    "obscene": 0.31132229370760095,
+    "threat": 0.005569103733498399,
+    "insult": 0.8468199008748881,
+    "identity_hate": 0.027383006500953797
+   },
+   "decision": "ACTION",
+   "triggering_labels": [
+    "insult"
+   ]
+  },
+  {
+   "system": "distilbert",
+   "probabilities": {
+    "toxic": 0.2598629313040172,
+    "severe_toxic": 0.06537855133860758,
+    "obscene": 0.31132229370760095,
+    "threat": 0.005569103733498399,
+    "insult": 0.21698421430303846,
+    "identity_hate": 0.0273830065009538
+   },
+   "decision": "HUMAN REVIEW",
+   "triggering_labels": [
+    "identity_hate"
+   ]
+  },
+  {
+   "system": "distilbert",
+   "probabilities": {
+    "toxic": 0.2598629313040173,
+    "severe_toxic": 0.0653785513386076,
+    "obscene": 0.311322293707601,
+    "threat": 0.0055691037334984,
+    "insult": 0.2169842143030385,
+    "identity_hate": 0.8248055587605355
+   },
+   "decision": "HUMAN REVIEW",
+   "triggering_labels": [
+    "toxic",
+    "severe_toxic",
+    "obscene",
+    "threat",
+    "insult",
+    "identity_hate"
+   ]
+  },
+  {
+   "system": "distilbert",
+   "probabilities": {
+    "toxic": 0.2598629313040172,
+    "severe_toxic": 0.06537855133860758,
+    "obscene": 0.31132229370760095,
+    "threat": 0.005569103733498399,
+    "insult": 0.21698421430303846,
+    "identity_hate": 0.8248055587605356
+   },
+   "decision": "ACTION",
+   "triggering_labels": [
+    "identity_hate"
+   ]
+  },
+  {
+   "system": "jev",
+   "probabilities": {
+    "toxic": 0.11594202999999999,
+    "severe_toxic": 0.04761904799999999,
+    "obscene": 0.14406779999999997,
+    "threat": 0.05714285699999999,
+    "insult": 0.08715596299999999,
+    "identity_hate": 0.07975460099999998
+   },
+   "decision": "ALLOW",
+   "triggering_labels": []
+  },
+  {
+   "system": "jev",
+   "probabilities": {
+    "toxic": 0.11594203,
+    "severe_toxic": 0.047619048,
+    "obscene": 0.1440678,
+    "threat": 0.057142857,
+    "insult": 0.087155963,
+    "identity_hate": 0.079754601
+   },
+   "decision": "HUMAN REVIEW",
+   "triggering_labels": [
+    "toxic",
+    "severe_toxic",
+    "obscene",
+    "threat",
+    "insult",
+    "identity_hate"
+   ]
+  },
+  {
+   "system": "jev",
+   "probabilities": {
+    "toxic": 1.0,
+    "severe_toxic": 1.0,
+    "obscene": 1.0,
+    "threat": 1.0,
+    "insult": 1.0,
+    "identity_hate": 1.0
+   },
+   "decision": "ACTION",
+   "triggering_labels": [
+    "toxic",
+    "obscene"
+   ]
+  },
+  {
+   "system": "jev",
+   "probabilities": {
+    "toxic": 0.11594203,
+    "severe_toxic": 0.04761904799999999,
+    "obscene": 0.14406779999999997,
+    "threat": 0.05714285699999999,
+    "insult": 0.08715596299999999,
+    "identity_hate": 0.07975460099999998
+   },
+   "decision": "HUMAN REVIEW",
+   "triggering_labels": [
+    "toxic"
+   ]
+  },
+  {
+   "system": "jev",
+   "probabilities": {
+    "toxic": 0.7435897399999999,
+    "severe_toxic": 0.047619048,
+    "obscene": 0.1440678,
+    "threat": 0.057142857,
+    "insult": 0.087155963,
+    "identity_hate": 0.079754601
+   },
+   "decision": "HUMAN REVIEW",
+   "triggering_labels": [
+    "toxic",
+    "severe_toxic",
+    "obscene",
+    "threat",
+    "insult",
+    "identity_hate"
+   ]
+  },
+  {
+   "system": "jev",
+   "probabilities": {
+    "toxic": 0.74358974,
+    "severe_toxic": 0.04761904799999999,
+    "obscene": 0.14406779999999997,
+    "threat": 0.05714285699999999,
+    "insult": 0.08715596299999999,
+    "identity_hate": 0.07975460099999998
+   },
+   "decision": "ACTION",
+   "triggering_labels": [
+    "toxic"
+   ]
+  },
+  {
+   "system": "jev",
+   "probabilities": {
+    "toxic": 0.11594202999999999,
+    "severe_toxic": 0.047619048,
+    "obscene": 0.14406779999999997,
+    "threat": 0.05714285699999999,
+    "insult": 0.08715596299999999,
+    "identity_hate": 0.07975460099999998
+   },
+   "decision": "HUMAN REVIEW",
+   "triggering_labels": [
+    "severe_toxic"
+   ]
+  },
+  {
+   "system": "jev",
+   "probabilities": {
+    "toxic": 0.11594202999999999,
+    "severe_toxic": 0.04761904799999999,
+    "obscene": 0.1440678,
+    "threat": 0.05714285699999999,
+    "insult": 0.08715596299999999,
+    "identity_hate": 0.07975460099999998
+   },
+   "decision": "HUMAN REVIEW",
+   "triggering_labels": [
+    "obscene"
+   ]
+  },
+  {
+   "system": "jev",
+   "probabilities": {
+    "toxic": 0.11594203,
+    "severe_toxic": 0.047619048,
+    "obscene": 0.8577777799999999,
+    "threat": 0.057142857,
+    "insult": 0.087155963,
+    "identity_hate": 0.079754601
+   },
+   "decision": "HUMAN REVIEW",
+   "triggering_labels": [
+    "toxic",
+    "severe_toxic",
+    "obscene",
+    "threat",
+    "insult",
+    "identity_hate"
+   ]
+  },
+  {
+   "system": "jev",
+   "probabilities": {
+    "toxic": 0.11594202999999999,
+    "severe_toxic": 0.04761904799999999,
+    "obscene": 0.85777778,
+    "threat": 0.05714285699999999,
+    "insult": 0.08715596299999999,
+    "identity_hate": 0.07975460099999998
+   },
+   "decision": "ACTION",
+   "triggering_labels": [
+    "obscene"
+   ]
+  },
+  {
+   "system": "jev",
+   "probabilities": {
+    "toxic": 0.11594202999999999,
+    "severe_toxic": 0.04761904799999999,
+    "obscene": 0.14406779999999997,
+    "threat": 0.057142857,
+    "insult": 0.08715596299999999,
+    "identity_hate": 0.07975460099999998
+   },
+   "decision": "HUMAN REVIEW",
+   "triggering_labels": [
+    "threat"
+   ]
+  },
+  {
+   "system": "jev",
+   "probabilities": {
+    "toxic": 0.11594202999999999,
+    "severe_toxic": 0.04761904799999999,
+    "obscene": 0.14406779999999997,
+    "threat": 0.05714285699999999,
+    "insult": 0.087155963,
+    "identity_hate": 0.07975460099999998
+   },
+   "decision": "HUMAN REVIEW",
+   "triggering_labels": [
+    "insult"
+   ]
+  },
+  {
+   "system": "jev",
+   "probabilities": {
+    "toxic": 0.11594202999999999,
+    "severe_toxic": 0.04761904799999999,
+    "obscene": 0.14406779999999997,
+    "threat": 0.05714285699999999,
+    "insult": 0.08715596299999999,
+    "identity_hate": 0.079754601
+   },
+   "decision": "HUMAN REVIEW",
+   "triggering_labels": [
+    "identity_hate"
+   ]
+  },
+  {
+   "system": "logreg_word",
+   "probabilities": {
+    "toxic": 0.09537166899999999,
+    "severe_toxic": 0.015151514999999999,
+    "obscene": 0.12980768999999998,
+    "threat": 0.019417475999999996,
+    "insult": 0.09795918399999999,
+    "identity_hate": 0.009562841499999999
+   },
+   "decision": "ALLOW",
+   "triggering_labels": []
+  },
+  {
+   "system": "logreg_word",
+   "probabilities": {
+    "toxic": 0.095371669,
+    "severe_toxic": 0.015151515,
+    "obscene": 0.12980769,
+    "threat": 0.019417476,
+    "insult": 0.097959184,
+    "identity_hate": 0.0095628415
+   },
+   "decision": "HUMAN REVIEW",
+   "triggering_labels": [
+    "toxic",
+    "severe_toxic",
+    "obscene",
+    "threat",
+    "insult",
+    "identity_hate"
+   ]
+  },
+  {
+   "system": "logreg_word",
+   "probabilities": {
+    "toxic": 1.0,
+    "severe_toxic": 1.0,
+    "obscene": 1.0,
+    "threat": 1.0,
+    "insult": 1.0,
+    "identity_hate": 1.0
+   },
+   "decision": "ACTION",
+   "triggering_labels": [
+    "toxic",
+    "obscene",
+    "insult"
+   ]
+  },
+  {
+   "system": "logreg_word",
+   "probabilities": {
+    "toxic": 0.095371669,
+    "severe_toxic": 0.015151514999999999,
+    "obscene": 0.12980768999999998,
+    "threat": 0.019417475999999996,
+    "insult": 0.09795918399999999,
+    "identity_hate": 0.009562841499999999
+   },
+   "decision": "HUMAN REVIEW",
+   "triggering_labels": [
+    "toxic"
+   ]
+  },
+  {
+   "system": "logreg_word",
+   "probabilities": {
+    "toxic": 0.6571428599999999,
+    "severe_toxic": 0.015151515,
+    "obscene": 0.12980769,
+    "threat": 0.019417476,
+    "insult": 0.097959184,
+    "identity_hate": 0.0095628415
+   },
+   "decision": "HUMAN REVIEW",
+   "triggering_labels": [
+    "toxic",
+    "severe_toxic",
+    "obscene",
+    "threat",
+    "insult",
+    "identity_hate"
+   ]
+  },
+  {
+   "system": "logreg_word",
+   "probabilities": {
+    "toxic": 0.65714286,
+    "severe_toxic": 0.015151514999999999,
+    "obscene": 0.12980768999999998,
+    "threat": 0.019417475999999996,
+    "insult": 0.09795918399999999,
+    "identity_hate": 0.009562841499999999
+   },
+   "decision": "ACTION",
+   "triggering_labels": [
+    "toxic"
+   ]
+  },
+  {
+   "system": "logreg_word",
+   "probabilities": {
+    "toxic": 0.09537166899999999,
+    "severe_toxic": 0.015151515,
+    "obscene": 0.12980768999999998,
+    "threat": 0.019417475999999996,
+    "insult": 0.09795918399999999,
+    "identity_hate": 0.009562841499999999
+   },
+   "decision": "HUMAN REVIEW",
+   "triggering_labels": [
+    "severe_toxic"
+   ]
+  },
+  {
+   "system": "logreg_word",
+   "probabilities": {
+    "toxic": 0.09537166899999999,
+    "severe_toxic": 0.015151514999999999,
+    "obscene": 0.12980769,
+    "threat": 0.019417475999999996,
+    "insult": 0.09795918399999999,
+    "identity_hate": 0.009562841499999999
+   },
+   "decision": "HUMAN REVIEW",
+   "triggering_labels": [
+    "obscene"
+   ]
+  },
+  {
+   "system": "logreg_word",
+   "probabilities": {
+    "toxic": 0.095371669,
+    "severe_toxic": 0.015151515,
+    "obscene": 0.6965517199999999,
+    "threat": 0.019417476,
+    "insult": 0.097959184,
+    "identity_hate": 0.0095628415
+   },
+   "decision": "HUMAN REVIEW",
+   "triggering_labels": [
+    "toxic",
+    "severe_toxic",
+    "obscene",
+    "threat",
+    "insult",
+    "identity_hate"
+   ]
+  },
+  {
+   "system": "logreg_word",
+   "probabilities": {
+    "toxic": 0.09537166899999999,
+    "severe_toxic": 0.015151514999999999,
+    "obscene": 0.69655172,
+    "threat": 0.019417475999999996,
+    "insult": 0.09795918399999999,
+    "identity_hate": 0.009562841499999999
+   },
+   "decision": "ACTION",
+   "triggering_labels": [
+    "obscene"
+   ]
+  },
+  {
+   "system": "logreg_word",
+   "probabilities": {
+    "toxic": 0.09537166899999999,
+    "severe_toxic": 0.015151514999999999,
+    "obscene": 0.12980768999999998,
+    "threat": 0.019417476,
+    "insult": 0.09795918399999999,
+    "identity_hate": 0.009562841499999999
+   },
+   "decision": "HUMAN REVIEW",
+   "triggering_labels": [
+    "threat"
+   ]
+  },
+  {
+   "system": "logreg_word",
+   "probabilities": {
+    "toxic": 0.09537166899999999,
+    "severe_toxic": 0.015151514999999999,
+    "obscene": 0.12980768999999998,
+    "threat": 0.019417475999999996,
+    "insult": 0.097959184,
+    "identity_hate": 0.009562841499999999
+   },
+   "decision": "HUMAN REVIEW",
+   "triggering_labels": [
+    "insult"
+   ]
+  },
+  {
+   "system": "logreg_word",
+   "probabilities": {
+    "toxic": 0.095371669,
+    "severe_toxic": 0.015151515,
+    "obscene": 0.12980769,
+    "threat": 0.019417476,
+    "insult": 0.8510638299999999,
+    "identity_hate": 0.0095628415
+   },
+   "decision": "HUMAN REVIEW",
+   "triggering_labels": [
+    "toxic",
+    "severe_toxic",
+    "obscene",
+    "threat",
+    "insult",
+    "identity_hate"
+   ]
+  },
+  {
+   "system": "logreg_word",
+   "probabilities": {
+    "toxic": 0.09537166899999999,
+    "severe_toxic": 0.015151514999999999,
+    "obscene": 0.12980768999999998,
+    "threat": 0.019417475999999996,
+    "insult": 0.85106383,
+    "identity_hate": 0.009562841499999999
+   },
+   "decision": "ACTION",
+   "triggering_labels": [
+    "insult"
+   ]
+  },
+  {
+   "system": "logreg_word",
+   "probabilities": {
+    "toxic": 0.09537166899999999,
+    "severe_toxic": 0.015151514999999999,
+    "obscene": 0.12980768999999998,
+    "threat": 0.019417475999999996,
+    "insult": 0.09795918399999999,
+    "identity_hate": 0.0095628415
+   },
+   "decision": "HUMAN REVIEW",
+   "triggering_labels": [
+    "identity_hate"
+   ]
+  }
+ ]
+}

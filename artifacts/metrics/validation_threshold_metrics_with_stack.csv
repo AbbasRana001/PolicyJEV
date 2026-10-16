@@ -1,0 +1,65 @@
+threshold_basis,system,label,is_rare_label,positives,threshold,precision,recall,f1,sample_status
+validation_oof_fit,logreg_word,toxic,False,2274.0,0.39,0.8177863702271628,0.7440633245382586,0.7791848952337094,in-sample (thresholds were fit on these rows)
+validation_oof_fit,logreg_word,severe_toxic,True,227.0,0.22,0.3275862068965517,0.6696035242290749,0.4399421128798842,in-sample (thresholds were fit on these rows)
+validation_oof_fit,logreg_word,obscene,False,1258.0,0.42,0.8191666666666667,0.7813990461049285,0.7998372660699757,in-sample (thresholds were fit on these rows)
+validation_oof_fit,logreg_word,threat,True,72.0,0.22,0.4065040650406504,0.6944444444444444,0.5128205128205129,in-sample (thresholds were fit on these rows)
+validation_oof_fit,logreg_word,insult,False,1175.0,0.35,0.6879756468797564,0.7693617021276595,0.726396143029329,in-sample (thresholds were fit on these rows)
+validation_oof_fit,logreg_word,identity_hate,True,209.0,0.25,0.49019607843137253,0.4784688995215311,0.48426150121065376,in-sample (thresholds were fit on these rows)
+validation_oof_fit,logreg_word,micro,False,5215.0,,0.7221808708596948,0.7441994247363375,0.7330248370950987,in-sample (thresholds were fit on these rows)
+validation_oof_fit,logreg_word,macro,False,,,,,0.6237404052073442,in-sample (thresholds were fit on these rows)
+fixed_0.5,logreg_word,toxic,False,2274.0,0.5,0.8682634730538922,0.7014072119613016,0.7759669180248114,not fitted
+fixed_0.5,logreg_word,severe_toxic,True,227.0,0.5,0.5119047619047619,0.1894273127753304,0.2765273311897106,not fitted
+fixed_0.5,logreg_word,obscene,False,1258.0,0.5,0.8511029411764706,0.7360890302066773,0.7894288150042624,not fitted
+fixed_0.5,logreg_word,threat,True,72.0,0.5,0.5,0.2916666666666667,0.3684210526315789,not fitted
+fixed_0.5,logreg_word,insult,False,1175.0,0.5,0.7415525114155251,0.691063829787234,0.715418502202643,not fitted
+fixed_0.5,logreg_word,identity_hate,True,209.0,0.5,0.6571428571428571,0.33014354066985646,0.4394904458598726,not fitted
+fixed_0.5,logreg_word,micro,False,5215.0,,0.8153375676311456,0.664621284755513,0.732305091907881,not fitted
+fixed_0.5,logreg_word,macro,False,,,,,0.5608755108188131,not fitted
+validation_oof_fit,distilbert,toxic,False,2274.0,0.49,0.8377173428444048,0.826297273526825,0.8319681204339162,in-sample (thresholds were fit on these rows)
+validation_oof_fit,distilbert,severe_toxic,True,227.0,0.31,0.44932432432432434,0.5859030837004405,0.5086042065009561,in-sample (thresholds were fit on these rows)
+validation_oof_fit,distilbert,obscene,False,1258.0,0.46,0.8242097147262915,0.8497615262321144,0.8367906066536203,in-sample (thresholds were fit on these rows)
+validation_oof_fit,distilbert,threat,True,72.0,0.23,0.49,0.6805555555555556,0.5697674418604651,in-sample (thresholds were fit on these rows)
+validation_oof_fit,distilbert,insult,False,1175.0,0.43,0.756155679110405,0.8102127659574468,0.7822514379622022,in-sample (thresholds were fit on these rows)
+validation_oof_fit,distilbert,identity_hate,True,209.0,0.24,0.5916030534351145,0.7416267942583732,0.6581740976645436,in-sample (thresholds were fit on these rows)
+validation_oof_fit,distilbert,micro,False,5215.0,,0.7764339380612058,0.812464046021093,0.7940404797601199,in-sample (thresholds were fit on these rows)
+validation_oof_fit,distilbert,macro,False,,,,,0.697925985179284,in-sample (thresholds were fit on these rows)
+fixed_0.5,distilbert,toxic,False,2274.0,0.5,0.8408273381294964,0.8223394898856641,0.8314806580702535,not fitted
+fixed_0.5,distilbert,severe_toxic,True,227.0,0.5,0.5365853658536586,0.19383259911894274,0.28478964401294504,not fitted
+fixed_0.5,distilbert,obscene,False,1258.0,0.5,0.8401606425702811,0.8314785373608903,0.8357970435477426,not fitted
+fixed_0.5,distilbert,threat,True,72.0,0.5,0.6521739130434783,0.4166666666666667,0.5084745762711865,not fitted
+fixed_0.5,distilbert,insult,False,1175.0,0.5,0.7810344827586206,0.7710638297872341,0.776017130620985,not fitted
+fixed_0.5,distilbert,identity_hate,True,209.0,0.5,0.72,0.5167464114832536,0.6016713091922006,not fitted
+fixed_0.5,distilbert,micro,False,5215.0,,0.8159771754636234,0.7677852348993288,0.7911479944674966,not fitted
+fixed_0.5,distilbert,macro,False,,,,,0.6397050602858855,not fitted
+validation_oof_fit,jev,toxic,False,2274.0,0.38,0.744208969935929,0.6640281442392261,0.7018359284220311,in-sample (thresholds were fit on these rows)
+validation_oof_fit,jev,severe_toxic,True,227.0,0.17,0.2892057026476578,0.6255506607929515,0.39554317548746515,in-sample (thresholds were fit on these rows)
+validation_oof_fit,jev,obscene,False,1258.0,0.36,0.716927453769559,0.8012718600953895,0.7567567567567567,in-sample (thresholds were fit on these rows)
+validation_oof_fit,jev,threat,True,72.0,0.27,0.45348837209302323,0.5416666666666666,0.4936708860759493,in-sample (thresholds were fit on these rows)
+validation_oof_fit,jev,insult,False,1175.0,0.39,0.6388888888888888,0.6851063829787234,0.6611909650924024,in-sample (thresholds were fit on these rows)
+validation_oof_fit,jev,identity_hate,True,209.0,0.28,0.44313725490196076,0.5406698564593302,0.4870689655172414,in-sample (thresholds were fit on these rows)
+validation_oof_fit,jev,micro,False,5215.0,,0.6544237380133888,0.6935762224352828,0.6734313908024576,in-sample (thresholds were fit on these rows)
+validation_oof_fit,jev,macro,False,,,,,0.582677779558641,in-sample (thresholds were fit on these rows)
+fixed_0.5,jev,toxic,False,2274.0,0.5,0.8310940499040307,0.5712401055408971,0.6770914777169664,not fitted
+fixed_0.5,jev,severe_toxic,True,227.0,0.5,0.0,0.0,0.0,not fitted
+fixed_0.5,jev,obscene,False,1258.0,0.5,0.7940647482014388,0.7019077901430842,0.7451476793248945,not fitted
+fixed_0.5,jev,threat,True,72.0,0.5,0.6111111111111112,0.3055555555555556,0.40740740740740744,not fitted
+fixed_0.5,jev,insult,False,1175.0,0.5,0.73375,0.49957446808510636,0.5944303797468354,not fitted
+fixed_0.5,jev,identity_hate,True,209.0,0.5,0.5487804878048781,0.215311004784689,0.30927835051546393,not fitted
+fixed_0.5,jev,micro,False,5215.0,,0.7893125521848038,0.5438159156279961,0.6439600363306085,not fitted
+fixed_0.5,jev,macro,False,,,,,0.45555921578526126,not fitted
+validation_oof_fit,jev_stack,toxic,False,2274.0,0.36,0.7512066695919263,0.752858399296394,0.7520316274983527,in-sample (thresholds were fit on these rows)
+validation_oof_fit,jev_stack,severe_toxic,True,227.0,0.26,0.3518005540166205,0.5594713656387665,0.43197278911564624,in-sample (thresholds were fit on these rows)
+validation_oof_fit,jev_stack,obscene,False,1258.0,0.36,0.7295774647887324,0.8235294117647058,0.7737117251680358,in-sample (thresholds were fit on these rows)
+validation_oof_fit,jev_stack,threat,True,72.0,0.2,0.37410071942446044,0.7222222222222222,0.49289099526066354,in-sample (thresholds were fit on these rows)
+validation_oof_fit,jev_stack,insult,False,1175.0,0.31,0.6286116983791402,0.7591489361702127,0.6877409406322281,in-sample (thresholds were fit on these rows)
+validation_oof_fit,jev_stack,identity_hate,True,209.0,0.27,0.43729903536977494,0.6507177033492823,0.5230769230769231,in-sample (thresholds were fit on these rows)
+validation_oof_fit,jev_stack,micro,False,5215.0,,0.667060212514758,0.7583892617449665,0.7097989949748744,in-sample (thresholds were fit on these rows)
+validation_oof_fit,jev_stack,macro,False,,,,,0.6102375001253083,in-sample (thresholds were fit on these rows)
+fixed_0.5,jev_stack,toxic,False,2274.0,0.5,0.8133478024959305,0.6591908531222516,0.7282001457371873,not fitted
+fixed_0.5,jev_stack,severe_toxic,True,227.0,0.5,0.5,0.01762114537444934,0.03404255319148936,not fitted
+fixed_0.5,jev_stack,obscene,False,1258.0,0.5,0.7601270849880858,0.760731319554849,0.7604290822407628,not fitted
+fixed_0.5,jev_stack,threat,True,72.0,0.5,0.6818181818181818,0.20833333333333334,0.3191489361702127,not fitted
+fixed_0.5,jev_stack,insult,False,1175.0,0.5,0.7104761904761905,0.6348936170212766,0.670561797752809,not fitted
+fixed_0.5,jev_stack,identity_hate,True,209.0,0.5,0.5263157894736842,0.19138755980861244,0.2807017543859649,not fitted
+fixed_0.5,jev_stack,micro,False,5215.0,,0.7658525129168624,0.6253116011505273,0.6884830571096802,not fitted
+fixed_0.5,jev_stack,macro,False,,,,,0.465514044913071,not fitted

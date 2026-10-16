@@ -1,0 +1,1 @@
+{"status":"ok","systems":{"logreg_word":{"status":"available","reason":null,"reason_code":null},"distilbert":{"status":"available","reason":null,"reason_code":null},"jev":{"status":"unavailable","reason":"API key not configured","reason_code":"no_api_key"}}}

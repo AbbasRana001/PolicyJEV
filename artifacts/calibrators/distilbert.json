@@ -1,0 +1,14 @@
+{
+  "system": "distilbert",
+  "method": "platt",
+  "question_version": null,
+  "fitted_on": "all validation rows",
+  "labels": {
+    "toxic": {"method":"platt","a":0.72047779,"b":-0.36729074},
+    "severe_toxic": {"method":"platt","a":0.83121801,"b":-0.32113334},
+    "obscene": {"method":"platt","a":0.78769218,"b":-0.23494773},
+    "threat": {"method":"platt","a":0.92727182,"b":-0.34697074},
+    "insult": {"method":"platt","a":0.7758071,"b":-0.1979969},
+    "identity_hate": {"method":"platt","a":0.86064709,"b":-0.22106854}
+  }
+}

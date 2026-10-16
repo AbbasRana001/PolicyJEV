@@ -1,0 +1,13 @@
+label,row_class,both_right,only_jev_right,only_distilbert_right,both_wrong
+toxic,positive,1384,126,495,269
+toxic,negative,20937,206,361,158
+severe_toxic,positive,105,37,28,57
+severe_toxic,negative,23314,46,232,117
+obscene,positive,923,85,146,104
+obscene,negative,22177,103,273,125
+threat,positive,31,8,18,15
+threat,negative,23776,41,37,10
+insult,positive,733,72,219,151
+insult,negative,22165,141,289,166
+identity_hate,positive,95,18,60,36
+identity_hate,negative,23527,58,93,49

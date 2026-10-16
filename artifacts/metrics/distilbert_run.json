@@ -1,0 +1,19 @@
+{
+  "seed": 42,
+  "distilbert": {
+    "checkpoint": "distilbert-base-uncased",
+    "max_length": 256,
+    "epochs": 3,
+    "batch_size": 32,
+    "eval_batch_size": 128,
+    "learning_rate": 2e-05,
+    "weight_decay": 0.01,
+    "warmup_ratio": 0.06,
+    "max_grad_norm": 1.0
+  },
+  "best_epoch": 3,
+  "torch_version": "2.11.0+cu130",
+  "transformers_version": "5.18.0",
+  "device": "Tesla T4",
+  "training_seconds": 2917.7877147197723
+}

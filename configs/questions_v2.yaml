@@ -1,0 +1,38 @@
+version: v2
+questions:
+  toxic:
+    type: noul
+    instructions: "Is this comment toxic?"
+    criteria:
+      "true": "A rude, disrespectful or hostile comment that would likely make a reasonable person want to leave the discussion: personal attacks, name-calling, profanity aimed at someone, hateful or aggressive language."
+      "false": "Neutral, civil or constructive. Disagreement, criticism, strong opinions or blunt wording without hostility, and quoting or discussing offensive words without using them against anyone, are not toxic."
+  severe_toxic:
+    type: noul
+    instructions: "Is this comment severely toxic?"
+    criteria:
+      "true": "Extremely hateful, abusive or aggressive: strings of heavy profanity, violent or degrading abuse directed at someone, or vicious personal attacks. Far worse than ordinary rudeness."
+      "false": "Not toxic, or only mildly to moderately rude, sarcastic or insulting."
+  obscene:
+    type: noul
+    instructions: "Does this comment contain obscene language?"
+    criteria:
+      "true": "Vulgar, profane or sexually explicit words or phrases (swearing, crude references to bodily functions or sex), whether or not directed at anyone."
+      "false": "No vulgar or profane language. Clean wording, even if critical or angry."
+  threat:
+    type: noul
+    instructions: "Does this comment threaten someone?"
+    criteria:
+      "true": "Expresses an intention or wish to hurt, harm, kill or otherwise take violent or punitive action against a person or group, including veiled or conditional threats."
+      "false": "No expression of intent or desire to harm. Mentions of violence in news, quotes, history or hypotheticals unrelated to a target are not threats."
+  insult:
+    type: noul
+    instructions: "Does this comment insult someone?"
+    criteria:
+      "true": "Insulting, demeaning or inflammatory language directed at a person or group: name-calling, mockery, or attacks on someone's character, intelligence or worth."
+      "false": "No insult. Criticism of ideas, work or actions in a civil tone is not an insult."
+  identity_hate:
+    type: noul
+    instructions: "Does this comment attack a person or group because of who they are?"
+    criteria:
+      "true": "Hateful, demeaning or stereotyping language aimed at people because of race, ethnicity, nationality, religion, gender, sexual orientation or disability, including slurs."
+      "false": "No attack on a protected identity. Neutral mention of identity, or insults unrelated to identity, are not identity hate."

@@ -1,0 +1,4 @@
+system,latency_p50_ms,latency_p95_ms,throughput_per_s_batch32,device,device_name,python_version,torch_version,sklearn_version,n_requests,n_comments
+logreg_word,1.7989500047406182,2.2677050073980354,5309.952550261238,cpu,"Intel64 Family 6 Model 158 Stepping 10, GenuineIntel",3.13.5,2.14.1+cpu,1.9.1,,500.0
+distilbert,40.81104999931995,147.62750499576208,7.1215363820280535,cpu,"Intel64 Family 6 Model 158 Stepping 10, GenuineIntel",3.13.5,2.14.1+cpu,1.9.1,,500.0
+jev,362.95945000165375,685.581474997889,,api,,,,,72246.0,

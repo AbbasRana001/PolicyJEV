@@ -1,0 +1,417 @@
+PolicyJEV console end-to-end report
+Started 2026-10-14T08:37:56.695Z, finished 2026-10-14T08:40:21.207Z
+Environment: Python 3.13.5; node v22.23.1; playwright chromium
+Servers: two API processes started by tests/e2e_api.py on free ports (not 8000), with the real calibrated models.
+  A: JEV unavailable (the key lookup is replaced, no key file is read).  B: JEV answered by a stub that returns fixed probabilities.
+  Nothing in this run contacts TypeSafe or any other host; the browser reaches only the test servers on 127.0.0.1.
+All scenarios were selected.
+
+Summary: 16 of 16 scenarios passed
+Checks: 362 run, 0 failed
+
+PASS  S01  Status chips: reachable, ready, needs key, unreachable and recovery  (15 checks, 10.5s)
+    ok    API chip says the API is reachable: data-api=online, text "API onlineThe API is reachable"
+    ok    logistic regression chip is ready: state=ready, text "Logistic regressionreadyLogistic regression: ready"
+    ok    DistilBERT chip is ready: state=ready, text "DistilBERTreadyDistilBERT: ready"
+    ok    JEV chip shows needs key when no key is configured: state=needs key, text "JEVneeds keyJEV: needs a TypeSafe API key on the API server"
+    ok    JEV chip explains the key in its tooltip: JEV: needs a TypeSafe API key on the API server
+    ok    the chip follows /api/health (reason_code no_api_key): {"status":"unavailable","reason":"API key not configured","reason_code":"no_api_key"}
+    ok    JEV chip is ready when a JEV scorer is available: state=ready, text "JEVreadyJEV: ready"
+    ok    /api/health agrees (available, no reason code): {"status":"available","reason":null,"reason_code":null}
+    ok    starts online (clock controlled)
+    ok    API chip changes to the unreachable state when the health request is aborted: text "API unreachableThe API did not answer. Start it with python -m policyjev.api.", class "sc down"
+    ok    system chips are not shown while the API is unreachable: 0 chips
+    ok    the chip recovers and the three system chips return: text "API onlineThe API is reachable", 3 chips
+    ok    light server is online before it is killed
+    ok    API chip changes to unreachable when the server process is killed: text "API unreachableThe API did not answer. Start it with python -m policyjev.api."
+    ok    the chip recovers when the server comes back: text "API onlineThe API is reachable", logistic regression ready
+
+PASS  S02  Score: empty input, the 2000-character limit, Ctrl+Enter, whitespace-only  (23 checks, 7.1s)
+    ok    Score is disabled while the box is empty
+    ok    Score is enabled once there is text
+    ok    Score is disabled again after clearing the box
+    ok    a text of exactly 2000 characters is sent: 2000 characters
+    ok    the API accepts it and scores the two local systems: status 200, 2 results
+    ok    no error or limit message is shown at 2000: alert=null, limit=null
+    ok    the counter reads 2000 / 2000: 2000 / 2000
+    ok    the verdicts show and Score stays enabled: tile scored
+    ok    2001 characters: no request is sent, by typing or by Ctrl+Enter: 0 requests
+    ok    2001 characters: the limit message is visible: The text is longer than 2000 characters. Shorten it, then score again.
+    ok    2001 characters: Score is disabled
+    ok    2001 characters: the counter reads 2001 / 2000: 2001 / 2000
+    ok    removing the extra character clears the message and scoring resumes: limit=null
+    ok    Ctrl+Enter sends one request straight away and the typing pause adds none: 1 requests
+    ok    Ctrl+Enter asks for every system (no systems list): ["text"]
+    ok    both local verdicts appear: scored, scored
+    ok    JEV shows as unavailable (no key), not as an error: Unavailable
+    ok    whitespace-only text ("   ") leaves Score disabled
+    ok    whitespace-only text ("\n\n") leaves Score disabled
+    ok    whitespace-only text (" \t \n ") leaves Score disabled
+    ok    whitespace-only text sends no request, by typing or by Ctrl+Enter: 0 requests
+    ok    the tiles still say Waiting for text: Waiting for text
+    ok    real text typed after the whitespace is scored: 1 request
+
+PASS  S03  Live typing: 320 ms pause, local systems only, explicit Score for JEV  (20 checks, 8.6s)
+    ok    typing with 120 ms between keys sends no request: 0 requests while typing 18 characters
+    ok    after the pause exactly one request is sent: 1 requests
+    ok    the request follows the last keystroke by the 320 ms pause (not sooner): 318 ms
+    ok    the body names the two local systems, using the ids the API reports: ["logreg_word","distilbert"]
+    ok    JEV is never in a live request
+    ok    the text is the text typed
+    ok    the API answers for the two local systems only: logreg_word,distilbert
+    ok    the JEV scorer was not called while typing: 0 calls
+    ok    the JEV tile says Press Score to run JEV: pending: "Press Score to run JEV"
+    ok    a Score click asks for every system: ["text"]
+    ok    and the API answers for all three: logreg_word,distilbert,jev
+    ok    the JEV verdict appears: scored: "Human review"
+    ok    the JEV scorer was called once for the click: 1 calls
+    ok    Ctrl+Enter also asks for and gets all three: 3 results
+    ok    and calls JEV once more: 2 calls
+    ok    after an edit the JEV tile returns to Press Score to run JEV: pending: "Press Score to run JEV"
+    ok    the edit triggers a local-only live request: 4 requests, systems ["logreg_word","distilbert"]
+    ok    live typing after the edit did not call JEV: 2 calls in total
+    ok    with no key the JEV tile says Unavailable, not Press Score: unavailable: "Unavailable"
+    ok    a Score click returns JEV as an unavailable issue with its reason code: {"system":"jev","status":"unavailable","reason":"API key not configured","reason_code":"no_api_key"}
+
+PASS  S04  Verdict consistency with the policy engine, probabilities in range, numbers match the response  (42 checks, 15.3s)
+    ok    benign (Friendly chip): three systems scored and shown: 55 characters; decisions logreg_word=ALLOW, distilbert=ALLOW, jev=HUMAN REVIEW
+    ok    blunt (Blunt chip): three systems scored and shown: 41 characters; decisions logreg_word=HUMAN REVIEW, distilbert=ALLOW, jev=HUMAN REVIEW
+    ok    hostile (Hostile chip): three systems scored and shown: 43 characters; decisions logreg_word=ACTION, distilbert=ACTION, jev=HUMAN REVIEW
+    ok    empty-ish (one full stop): three systems scored and shown: 1 characters; decisions logreg_word=ALLOW, distilbert=ALLOW, jev=HUMAN REVIEW
+    ok    2000 characters: three systems scored and shown: 2000 characters; decisions logreg_word=ALLOW, distilbert=ALLOW, jev=HUMAN REVIEW
+    ok    unicode and emoji: three systems scored and shown: 28 characters; decisions logreg_word=ALLOW, distilbert=ALLOW, jev=HUMAN REVIEW
+    ok    one character repeated 600 times: three systems scored and shown: 600 characters; decisions logreg_word=ALLOW, distilbert=ALLOW, jev=HUMAN REVIEW
+    ok    mixed case: three systems scored and shown: 40 characters; decisions logreg_word=ALLOW, distilbert=ALLOW, jev=HUMAN REVIEW
+    ok    digits and punctuation: three systems scored and shown: 25 characters; decisions logreg_word=ALLOW, distilbert=ALLOW, jev=HUMAN REVIEW
+    ok    several lines: three systems scored and shown: 49 characters; decisions logreg_word=ALLOW, distilbert=ALLOW, jev=HUMAN REVIEW
+    ok    [python] verdict equals the engine[benign (Friendly chip)]: screen = API = engine for logreg_word=ALLOW, distilbert=ALLOW, jev=HUMAN REVIEW
+    ok    [python] verdict equals the engine[blunt (Blunt chip)]: screen = API = engine for logreg_word=HUMAN REVIEW, distilbert=ALLOW, jev=HUMAN REVIEW
+    ok    [python] verdict equals the engine[hostile (Hostile chip)]: screen = API = engine for logreg_word=ACTION, distilbert=ACTION, jev=HUMAN REVIEW
+    ok    [python] verdict equals the engine[empty-ish (one full stop)]: screen = API = engine for logreg_word=ALLOW, distilbert=ALLOW, jev=HUMAN REVIEW
+    ok    [python] verdict equals the engine[2000 characters]: screen = API = engine for logreg_word=ALLOW, distilbert=ALLOW, jev=HUMAN REVIEW
+    ok    [python] verdict equals the engine[unicode and emoji]: screen = API = engine for logreg_word=ALLOW, distilbert=ALLOW, jev=HUMAN REVIEW
+    ok    [python] verdict equals the engine[one character repeated 600 times]: screen = API = engine for logreg_word=ALLOW, distilbert=ALLOW, jev=HUMAN REVIEW
+    ok    [python] verdict equals the engine[mixed case]: screen = API = engine for logreg_word=ALLOW, distilbert=ALLOW, jev=HUMAN REVIEW
+    ok    [python] verdict equals the engine[digits and punctuation]: screen = API = engine for logreg_word=ALLOW, distilbert=ALLOW, jev=HUMAN REVIEW
+    ok    [python] verdict equals the engine[several lines]: screen = API = engine for logreg_word=ALLOW, distilbert=ALLOW, jev=HUMAN REVIEW
+    ok    [python] probabilities are in range[benign (Friendly chip)]: 18 probabilities in [0.0000, 0.4286]
+    ok    [python] probabilities are in range[blunt (Blunt chip)]: 18 probabilities in [0.0000, 0.4286]
+    ok    [python] probabilities are in range[hostile (Hostile chip)]: 18 probabilities in [0.0000, 1.0000]
+    ok    [python] probabilities are in range[empty-ish (one full stop)]: 18 probabilities in [0.0000, 0.4286]
+    ok    [python] probabilities are in range[2000 characters]: 18 probabilities in [0.0000, 0.4286]
+    ok    [python] probabilities are in range[unicode and emoji]: 18 probabilities in [0.0000, 0.4286]
+    ok    [python] probabilities are in range[one character repeated 600 times]: 18 probabilities in [0.0000, 0.4286]
+    ok    [python] probabilities are in range[mixed case]: 18 probabilities in [0.0000, 0.4286]
+    ok    [python] probabilities are in range[digits and punctuation]: 18 probabilities in [0.0000, 0.4286]
+    ok    [python] probabilities are in range[several lines]: 18 probabilities in [0.0000, 0.4286]
+    ok    [python] numbers and meters match the response[benign (Friendly chip)]: 18 numbers equal the response to 4 decimals, meters lit to round(sqrt(p) x 40), times shown as returned
+    ok    [python] numbers and meters match the response[blunt (Blunt chip)]: 18 numbers equal the response to 4 decimals, meters lit to round(sqrt(p) x 40), times shown as returned
+    ok    [python] numbers and meters match the response[hostile (Hostile chip)]: 18 numbers equal the response to 4 decimals, meters lit to round(sqrt(p) x 40), times shown as returned
+    ok    [python] numbers and meters match the response[empty-ish (one full stop)]: 18 numbers equal the response to 4 decimals, meters lit to round(sqrt(p) x 40), times shown as returned
+    ok    [python] numbers and meters match the response[2000 characters]: 18 numbers equal the response to 4 decimals, meters lit to round(sqrt(p) x 40), times shown as returned
+    ok    [python] numbers and meters match the response[unicode and emoji]: 18 numbers equal the response to 4 decimals, meters lit to round(sqrt(p) x 40), times shown as returned
+    ok    [python] numbers and meters match the response[one character repeated 600 times]: 18 numbers equal the response to 4 decimals, meters lit to round(sqrt(p) x 40), times shown as returned
+    ok    [python] numbers and meters match the response[mixed case]: 18 numbers equal the response to 4 decimals, meters lit to round(sqrt(p) x 40), times shown as returned
+    ok    [python] numbers and meters match the response[digits and punctuation]: 18 numbers equal the response to 4 decimals, meters lit to round(sqrt(p) x 40), times shown as returned
+    ok    [python] numbers and meters match the response[several lines]: 18 numbers equal the response to 4 decimals, meters lit to round(sqrt(p) x 40), times shown as returned
+    ok    [python] meter colours follow the thresholds: 720 meter cells coloured as the engine would decide for the probability at the centre of each cell
+    ok    [python] the jev stub answers the same every time: the stub JEV returned identical probabilities for all inputs
+    note  10 inputs sent through the page; each response and the screen were recorded for tests/e2e_check.py
+
+PASS  S05  Privacy: a unique sentence appears nowhere it should not  (28 checks, 2.9s)
+    ok    the sentence was scored by the local systems and by the JEV stub: scored, scored, scored
+    ok    every request went to the test server and to no other host: 2 requests; hosts 127.0.0.1:53264
+    ok    the sentence is in the body of the score requests and in no other request: 2 of 2 requests carry it, all POST /api/score
+    ok    it is in no request URL: 2 URLs checked
+    ok    it is not in the page's cookies: []
+    ok    it is not in the page's cookie: (empty)
+    ok    it is not in the page's local: {}
+    ok    it is not in the page's session: {}
+    ok    it is not in the page's idb: []
+    ok    it is not in the page's name: (empty)
+    ok    it is not in the page's title: PolicyJEV Console
+    ok    it is not in the page's url: http://127.0.0.1:53264/
+    ok    it is not in the page's history: null
+    ok    it is not in the page's resources: http://127.0.0.1:53264/assets/index-XR7taxYk.js
+    http://127.0.0.1:53264/assets/in...
+    ok    it is not in the page's caches: []
+    ok    no service worker and no cache storage: 0 workers, 0 caches
+    ok    it is in no output of either API process (stdout and stderr): 8756 characters of output, 424 written during this scenario
+    ok    the access log lists the score requests without their content: 16 lines, e.g. INFO:     127.0.0.1:53381 - "POST /api/score HTTP/1.1" 200 OK
+    ok    it is in no file created or changed under the repository during this scenario: 0 files changed, 0 contain it
+    ok    422 for text over the limit and the body does not echo the input: status 422, 112 characters
+    ok    422 for empty text, unknown field and the body does not echo the input: status 422, 199 characters
+    ok    422 for unknown system and the body does not echo the input: status 422, 125 characters
+    ok    422 for empty systems list and the body does not echo the input: status 422, 123 characters
+    ok    422 for text of the wrong type and the body does not echo the input: status 422, 96 characters
+    ok    422 for broken JSON and the body does not echo the input: status 422, 79 characters
+    ok    422 for plain text body and the body does not echo the input: status 422, 136 characters
+    ok    and the invalid requests did not put it in the process output either
+    ok    end of run: it is in no file created or changed anywhere under the repository since the run began (logs and observations included): 10 files changed, 0 contain it
+    note  localStorage keys: []; sessionStorage keys: []; IndexedDB stores: 0
+
+PASS  S06  Policy page numbers equal their sources (explorer thresholds, flow, five measures, comparison, dumbbells, sentences)  (32 checks, 2.5s)
+    ok    the explorer shows six labels for each of the three systems: 18 system-label rows
+    ok    three flow bars, five measures and four comparison rows are drawn: 3 flows, 5 measures, 4 comparison rows
+    ok    both dumbbell plots are drawn (recall for all 18 system-label pairs): 9 precision rows, 18 recall rows
+    ok    the readings and the section headings are present: 3 readings
+    ok    the explorer is headed Try a probability and the validation section is headed descriptively: Try a probability | On the test set, DistilBERT had the lowest review share and the lowest share of harmful comments allowed | How JEV compares, measure by measure | Validation against test results at the fitted thresholds
+    ok    the slider label says it is applied to every label: Probabilityapplied to every label
+    ok    the pill notes are Can trigger action and Cannot trigger action: Can trigger action | Cannot trigger action
+    ok    the paragraph on trust has no first person: The 0.90 recall and precision targets are assumptions about what a moderation te
+    ok    [python] api results equal the csvs: the API's summary, contrasts, per-label and threshold rows equal the CSVs to 1e-12
+    ok    [python] explorer thresholds equal the csv[logreg word-toxic]: Logistic regression toxic: LOW 0.0954HIGH 0.6571; Can trigger action; at p=0.0502 Allow
+    ok    [python] explorer thresholds equal the csv[logreg word-severe toxic]: Logistic regression severe_toxic: LOW 0.0152no HIGH threshold; Cannot trigger action; at p=0.0502 Human review
+    ok    [python] explorer thresholds equal the csv[logreg word-obscene]: Logistic regression obscene: LOW 0.1298HIGH 0.6966; Can trigger action; at p=0.0502 Allow
+    ok    [python] explorer thresholds equal the csv[logreg word-threat]: Logistic regression threat: LOW 0.0194no HIGH threshold; Cannot trigger action; at p=0.0502 Human review
+    ok    [python] explorer thresholds equal the csv[logreg word-insult]: Logistic regression insult: LOW 0.0980HIGH 0.8511; Can trigger action; at p=0.0502 Allow
+    ok    [python] explorer thresholds equal the csv[logreg word-identity hate]: Logistic regression identity_hate: LOW 0.0096no HIGH threshold; Cannot trigger action; at p=0.0502 Human review
+    ok    [python] explorer thresholds equal the csv[distilbert-toxic]: DistilBERT toxic: LOW 0.2599HIGH 0.6537; Can trigger action; at p=0.0502 Allow
+    ok    [python] explorer thresholds equal the csv[distilbert-severe toxic]: DistilBERT severe_toxic: LOW 0.0654no HIGH threshold; Cannot trigger action; at p=0.0502 Allow
+    ok    [python] explorer thresholds equal the csv[distilbert-obscene]: DistilBERT obscene: LOW 0.3113HIGH 0.6703; Can trigger action; at p=0.0502 Allow
+    ok    [python] explorer thresholds equal the csv[distilbert-threat]: DistilBERT threat: LOW 0.0056no HIGH threshold; Cannot trigger action; at p=0.0502 Human review
+    ok    [python] explorer thresholds equal the csv[distilbert-insult]: DistilBERT insult: LOW 0.2170HIGH 0.8468; Can trigger action; at p=0.0502 Allow
+    ok    [python] explorer thresholds equal the csv[distilbert-identity hate]: DistilBERT identity_hate: LOW 0.0274HIGH 0.8248; Can trigger action; at p=0.0502 Human review
+    ok    [python] explorer thresholds equal the csv[jev-toxic]: JEV toxic: LOW 0.1159HIGH 0.7436; Can trigger action; at p=0.0502 Allow
+    ok    [python] explorer thresholds equal the csv[jev-severe toxic]: JEV severe_toxic: LOW 0.0476no HIGH threshold; Cannot trigger action; at p=0.0502 Human review
+    ok    [python] explorer thresholds equal the csv[jev-obscene]: JEV obscene: LOW 0.1441HIGH 0.8578; Can trigger action; at p=0.0502 Allow
+    ok    [python] explorer thresholds equal the csv[jev-threat]: JEV threat: LOW 0.0571no HIGH threshold; Cannot trigger action; at p=0.0502 Allow
+    ok    [python] explorer thresholds equal the csv[jev-insult]: JEV insult: LOW 0.0872no HIGH threshold; Cannot trigger action; at p=0.0502 Allow
+    ok    [python] explorer thresholds equal the csv[jev-identity hate]: JEV identity_hate: LOW 0.0798no HIGH threshold; Cannot trigger action; at p=0.0502 Allow
+    ok    [python] flow counts and percentages: counts sum to 63,978 for each of the 3 systems; bar widths sum to 100; percentages printed to 1 decimal
+    ok    [python] five measures: 15 values equal policy_test_summary.csv to 3 decimals; the best of each measure is flagged; dots on one axis
+    ok    [python] comparison rows values intervals and sign: 8 lines match the CSV after flipping lower-is-better measures; every dot is left of the middle exactly when JEV is worse (red = JEV worse); 8 intervals, none touches zero
+    ok    [python] dumbbells values changes and targets: 27 rows: validation, test and change equal the CSVs to 3 decimals; positions on the axis from 0.5; the dashed line at the target
+    ok    [python] summary sentences are true: headline names DistilBERT; readings: Recall at the review threshold was below the 0.90 target on 1 of 6 labels for logistic regression (lowest 0.895, obscene...
+    note  each displayed number is compared with policy_thresholds.csv, policy_test_summary.csv, policy_test_contrasts.csv and policy_test_per_label.csv by tests/e2e_check.py (S06 checks)
+
+PASS  S07  Explorer: every system and label just below and at-or-above LOW and HIGH, by drag and by keyboard  (61 checks, 8.4s)
+    ok    switching to distilbert re-renders all six rows: 6 rows, 0 left over from before
+    ok    switching to jev re-renders all six rows: 6 rows, 0 left over from before
+    ok    switching to logreg_word re-renders all six rows: 6 rows, 0 left over from before
+    ok    every probe position was reached exactly: 54 of 54 cases
+    ok    all systems, labels and both thresholds were probed on both sides: 54 cases: 37 by drag, 0 by drag then keys, 17 by keys alone
+    ok    review-only labels never show Action, at any probe: 158 review-only rows seen
+    ok    each system tab was switched to and checked
+    ok    [python] explorer equals the engine[0]: drag: position 509, p=0.259081 (below toxic LOW=0.259863): toxic=Allow, severe_toxic=Human review, obscene=Allow, threat=Human review, insult=Human review, identity_hate=Human review; capsule Human review
+    ok    [python] explorer equals the engine[1]: drag: position 510, p=0.260100 (at toxic LOW=0.259863): toxic=Human review, severe_toxic=Human review, obscene=Allow, threat=Human review, insult=Human review, identity_hate=Human review; capsule Human review
+    ok    [python] explorer equals the engine[2]: keys: position 808, p=0.652864 (below toxic HIGH=0.653701): toxic=Human review, severe_toxic=Human review, obscene=Human review, threat=Human review, insult=Human review, identity_hate=Human review; capsule Human review
+    ok    [python] explorer equals the engine[3]: drag: position 809, p=0.654481 (at toxic HIGH=0.653701): toxic=Action, severe_toxic=Human review, obscene=Human review, threat=Human review, insult=Human review, identity_hate=Human review; capsule Action
+    ok    [python] explorer equals the engine[4]: drag: position 255, p=0.065025 (below severe_toxic LOW=0.065379): toxic=Allow, severe_toxic=Allow, obscene=Allow, threat=Human review, insult=Allow, identity_hate=Human review; capsule Human review
+    ok    [python] explorer equals the engine[5]: keys: position 256, p=0.065536 (at severe_toxic LOW=0.065379): toxic=Allow, severe_toxic=Human review, obscene=Allow, threat=Human review, insult=Allow, identity_hate=Human review; capsule Human review
+    ok    [python] explorer equals the engine[6]: drag: position 557, p=0.310249 (below obscene LOW=0.311322): toxic=Human review, severe_toxic=Human review, obscene=Allow, threat=Human review, insult=Human review, identity_hate=Human review; capsule Human review
+    ok    [python] explorer equals the engine[7]: drag: position 558, p=0.311364 (at obscene LOW=0.311322): toxic=Human review, severe_toxic=Human review, obscene=Human review, threat=Human review, insult=Human review, identity_hate=Human review; capsule Human review
+    ok    [python] explorer equals the engine[8]: keys: position 818, p=0.669124 (below obscene HIGH=0.670333): toxic=Action, severe_toxic=Human review, obscene=Human review, threat=Human review, insult=Human review, identity_hate=Human review; capsule Action
+    ok    [python] explorer equals the engine[9]: drag: position 819, p=0.670761 (at obscene HIGH=0.670333): toxic=Action, severe_toxic=Human review, obscene=Action, threat=Human review, insult=Human review, identity_hate=Human review; capsule Action
+    ok    [python] explorer equals the engine[10]: drag: position 74, p=0.005476 (below threat LOW=0.005569): toxic=Allow, severe_toxic=Allow, obscene=Allow, threat=Allow, insult=Allow, identity_hate=Allow; capsule Allow
+    ok    [python] explorer equals the engine[11]: keys: position 75, p=0.005625 (at threat LOW=0.005569): toxic=Allow, severe_toxic=Allow, obscene=Allow, threat=Human review, insult=Allow, identity_hate=Allow; capsule Human review
+    ok    [python] explorer equals the engine[12]: drag: position 465, p=0.216225 (below insult LOW=0.216984): toxic=Allow, severe_toxic=Human review, obscene=Allow, threat=Human review, insult=Allow, identity_hate=Human review; capsule Human review
+    ok    [python] explorer equals the engine[13]: drag: position 466, p=0.217156 (at insult LOW=0.216984): toxic=Allow, severe_toxic=Human review, obscene=Allow, threat=Human review, insult=Human review, identity_hate=Human review; capsule Human review
+    ok    [python] explorer equals the engine[14]: keys: position 920, p=0.846400 (below insult HIGH=0.846820): toxic=Action, severe_toxic=Human review, obscene=Action, threat=Human review, insult=Human review, identity_hate=Action; capsule Action
+    ok    [python] explorer equals the engine[15]: drag: position 921, p=0.848241 (at insult HIGH=0.846820): toxic=Action, severe_toxic=Human review, obscene=Action, threat=Human review, insult=Action, identity_hate=Action; capsule Action
+    ok    [python] explorer equals the engine[16]: drag: position 165, p=0.027225 (below identity_hate LOW=0.027383): toxic=Allow, severe_toxic=Allow, obscene=Allow, threat=Human review, insult=Allow, identity_hate=Allow; capsule Human review
+    ok    [python] explorer equals the engine[17]: keys: position 166, p=0.027556 (at identity_hate LOW=0.027383): toxic=Allow, severe_toxic=Allow, obscene=Allow, threat=Human review, insult=Allow, identity_hate=Human review; capsule Human review
+    ok    [python] explorer equals the engine[18]: drag: position 908, p=0.824464 (below identity_hate HIGH=0.824806): toxic=Action, severe_toxic=Human review, obscene=Action, threat=Human review, insult=Human review, identity_hate=Human review; capsule Action
+    ok    [python] explorer equals the engine[19]: drag: position 909, p=0.826281 (at identity_hate HIGH=0.824806): toxic=Action, severe_toxic=Human review, obscene=Action, threat=Human review, insult=Human review, identity_hate=Action; capsule Action
+    ok    [python] explorer equals the engine[20]: drag: position 340, p=0.115600 (below toxic LOW=0.115942): toxic=Allow, severe_toxic=Human review, obscene=Allow, threat=Human review, insult=Human review, identity_hate=Human review; capsule Human review
+    ok    [python] explorer equals the engine[21]: drag: position 341, p=0.116281 (at toxic LOW=0.115942): toxic=Human review, severe_toxic=Human review, obscene=Allow, threat=Human review, insult=Human review, identity_hate=Human review; capsule Human review
+    ok    [python] explorer equals the engine[22]: keys: position 862, p=0.743044 (below toxic HIGH=0.743590): toxic=Human review, severe_toxic=Human review, obscene=Human review, threat=Human review, insult=Human review, identity_hate=Human review; capsule Human review
+    ok    [python] explorer equals the engine[23]: drag: position 863, p=0.744769 (at toxic HIGH=0.743590): toxic=Action, severe_toxic=Human review, obscene=Human review, threat=Human review, insult=Human review, identity_hate=Human review; capsule Action
+    ok    [python] explorer equals the engine[24]: drag: position 218, p=0.047524 (below severe_toxic LOW=0.047619): toxic=Allow, severe_toxic=Allow, obscene=Allow, threat=Allow, insult=Allow, identity_hate=Allow; capsule Allow
+    ok    [python] explorer equals the engine[25]: keys: position 219, p=0.047961 (at severe_toxic LOW=0.047619): toxic=Allow, severe_toxic=Human review, obscene=Allow, threat=Allow, insult=Allow, identity_hate=Allow; capsule Human review
+    ok    [python] explorer equals the engine[26]: drag: position 379, p=0.143641 (below obscene LOW=0.144068): toxic=Human review, severe_toxic=Human review, obscene=Allow, threat=Human review, insult=Human review, identity_hate=Human review; capsule Human review
+    ok    [python] explorer equals the engine[27]: drag: position 380, p=0.144400 (at obscene LOW=0.144068): toxic=Human review, severe_toxic=Human review, obscene=Human review, threat=Human review, insult=Human review, identity_hate=Human review; capsule Human review
+    ok    [python] explorer equals the engine[28]: keys: position 926, p=0.857476 (below obscene HIGH=0.857778): toxic=Action, severe_toxic=Human review, obscene=Human review, threat=Human review, insult=Human review, identity_hate=Human review; capsule Action
+    ok    [python] explorer equals the engine[29]: drag: position 927, p=0.859329 (at obscene HIGH=0.857778): toxic=Action, severe_toxic=Human review, obscene=Action, threat=Human review, insult=Human review, identity_hate=Human review; capsule Action
+    ok    [python] explorer equals the engine[30]: drag: position 239, p=0.057121 (below threat LOW=0.057143): toxic=Allow, severe_toxic=Human review, obscene=Allow, threat=Allow, insult=Allow, identity_hate=Allow; capsule Human review
+    ok    [python] explorer equals the engine[31]: keys: position 240, p=0.057600 (at threat LOW=0.057143): toxic=Allow, severe_toxic=Human review, obscene=Allow, threat=Human review, insult=Allow, identity_hate=Allow; capsule Human review
+    ok    [python] explorer equals the engine[32]: drag: position 295, p=0.087025 (below insult LOW=0.087156): toxic=Allow, severe_toxic=Human review, obscene=Allow, threat=Human review, insult=Allow, identity_hate=Human review; capsule Human review
+    ok    [python] explorer equals the engine[33]: drag: position 296, p=0.087616 (at insult LOW=0.087156): toxic=Allow, severe_toxic=Human review, obscene=Allow, threat=Human review, insult=Human review, identity_hate=Human review; capsule Human review
+    ok    [python] explorer equals the engine[34]: keys: position 282, p=0.079524 (below identity_hate LOW=0.079755): toxic=Allow, severe_toxic=Human review, obscene=Allow, threat=Human review, insult=Allow, identity_hate=Allow; capsule Human review
+    ok    [python] explorer equals the engine[35]: drag: position 283, p=0.080089 (at identity_hate LOW=0.079755): toxic=Allow, severe_toxic=Human review, obscene=Allow, threat=Human review, insult=Allow, identity_hate=Human review; capsule Human review
+    ok    [python] explorer equals the engine[36]: drag: position 308, p=0.094864 (below toxic LOW=0.095372): toxic=Allow, severe_toxic=Human review, obscene=Allow, threat=Human review, insult=Allow, identity_hate=Human review; capsule Human review
+    ok    [python] explorer equals the engine[37]: drag: position 309, p=0.095481 (at toxic LOW=0.095372): toxic=Human review, severe_toxic=Human review, obscene=Allow, threat=Human review, insult=Allow, identity_hate=Human review; capsule Human review
+    ok    [python] explorer equals the engine[38]: keys: position 810, p=0.656100 (below toxic HIGH=0.657143): toxic=Human review, severe_toxic=Human review, obscene=Human review, threat=Human review, insult=Human review, identity_hate=Human review; capsule Human review
+    ok    [python] explorer equals the engine[39]: drag: position 811, p=0.657721 (at toxic HIGH=0.657143): toxic=Action, severe_toxic=Human review, obscene=Human review, threat=Human review, insult=Human review, identity_hate=Human review; capsule Action
+    ok    [python] explorer equals the engine[40]: drag: position 123, p=0.015129 (below severe_toxic LOW=0.015152): toxic=Allow, severe_toxic=Allow, obscene=Allow, threat=Allow, insult=Allow, identity_hate=Human review; capsule Human review
+    ok    [python] explorer equals the engine[41]: keys: position 124, p=0.015376 (at severe_toxic LOW=0.015152): toxic=Allow, severe_toxic=Human review, obscene=Allow, threat=Allow, insult=Allow, identity_hate=Human review; capsule Human review
+    ok    [python] explorer equals the engine[42]: drag: position 360, p=0.129600 (below obscene LOW=0.129808): toxic=Human review, severe_toxic=Human review, obscene=Allow, threat=Human review, insult=Human review, identity_hate=Human review; capsule Human review
+    ok    [python] explorer equals the engine[43]: drag: position 361, p=0.130321 (at obscene LOW=0.129808): toxic=Human review, severe_toxic=Human review, obscene=Human review, threat=Human review, insult=Human review, identity_hate=Human review; capsule Human review
+    ok    [python] explorer equals the engine[44]: keys: position 834, p=0.695556 (below obscene HIGH=0.696552): toxic=Action, severe_toxic=Human review, obscene=Human review, threat=Human review, insult=Human review, identity_hate=Human review; capsule Action
+    ok    [python] explorer equals the engine[45]: drag: position 835, p=0.697225 (at obscene HIGH=0.696552): toxic=Action, severe_toxic=Human review, obscene=Action, threat=Human review, insult=Human review, identity_hate=Human review; capsule Action
+    ok    [python] explorer equals the engine[46]: drag: position 139, p=0.019321 (below threat LOW=0.019417): toxic=Allow, severe_toxic=Human review, obscene=Allow, threat=Allow, insult=Allow, identity_hate=Human review; capsule Human review
+    ok    [python] explorer equals the engine[47]: keys: position 140, p=0.019600 (at threat LOW=0.019417): toxic=Allow, severe_toxic=Human review, obscene=Allow, threat=Human review, insult=Allow, identity_hate=Human review; capsule Human review
+    ok    [python] explorer equals the engine[48]: drag: position 312, p=0.097344 (below insult LOW=0.097959): toxic=Human review, severe_toxic=Human review, obscene=Allow, threat=Human review, insult=Allow, identity_hate=Human review; capsule Human review
+    ok    [python] explorer equals the engine[49]: drag: position 313, p=0.097969 (at insult LOW=0.097959): toxic=Human review, severe_toxic=Human review, obscene=Allow, threat=Human review, insult=Human review, identity_hate=Human review; capsule Human review
+    ok    [python] explorer equals the engine[50]: keys: position 922, p=0.850084 (below insult HIGH=0.851064): toxic=Action, severe_toxic=Human review, obscene=Action, threat=Human review, insult=Human review, identity_hate=Human review; capsule Action
+    ok    [python] explorer equals the engine[51]: drag: position 923, p=0.851929 (at insult HIGH=0.851064): toxic=Action, severe_toxic=Human review, obscene=Action, threat=Human review, insult=Action, identity_hate=Human review; capsule Action
+    ok    [python] explorer equals the engine[52]: drag: position 97, p=0.009409 (below identity_hate LOW=0.009563): toxic=Allow, severe_toxic=Allow, obscene=Allow, threat=Allow, insult=Allow, identity_hate=Allow; capsule Allow
+    ok    [python] explorer equals the engine[53]: keys: position 98, p=0.009604 (at identity_hate LOW=0.009563): toxic=Allow, severe_toxic=Allow, obscene=Allow, threat=Allow, insult=Allow, identity_hate=Human review; capsule Human review
+    note  PageUp moves the slider by 100 positions; positions are whole numbers 0 to 1000 and the probability is (position / 1000) squared, so the probability can come within about 2e-3 of a threshold but a threshold is never hit exactly
+    note  the expected chip of every row and the outcome capsule for every case come from src/policyjev/policy/engine.py in tests/e2e_check.py (S07 checks)
+
+PASS  S08  Results page: AP bars, intervals and budget points equal the CSVs; sentences are true  (9 checks, 2.6s)
+    ok    six labels with three bars each: 18 bars, 6 groups
+    ok    five budget points for each of the three systems: 15 points; chart 1184x330
+    ok    the direct labels use the same names as the legend (full names): JEV 0.307; Logistic regression 0.195; DistilBERT 0.125
+    ok    every leader line starts at its own system's first point: 3 leader lines
+    ok    all three lines are labelled at the smallest budget: JEV 0.307; Logistic regression 0.195; DistilBERT 0.125
+    ok    both sections have a heading and a sentence: 2 sections
+    ok    [python] ap bars intervals and labels: 18 bars: AP and 95% interval equal the CSV to 3 decimals; heights proportional to AP; 6 positive counts match
+    ok    [python] budget points equal the csv: 15 points equal review_budget_test_with_stack.csv (recall_rare) and sit at the right height
+    ok    [python] sentences are true statements: JEV trails both on toxic, obscene, insult; budget claims: JEV leads both baselines at 1% and 2%. At 5% it is level with logistic regression and ahead of DistilBERT. It trails both baselines at 10% and 20%. Order of recall: 1%: JEV > Logistic regression > DistilBERT; 2%: JEV > Logistic regression > DistilBERT; 5%: Logistic regression > JEV > DistilBERT; 10%: DistilBERT > Logistic regression > JEV; 20%: DistilBERT > Logistic regression > JEV
+    note  bars, intervals, points and sentences are compared with test_comparison_with_stack.csv and review_budget_test_with_stack.csv by tests/e2e_check.py (S08 checks)
+
+PASS  S09  Tabs keep typed text, scores, slider position and selections  (5 checks, 2.6s)
+    ok    the typed text is still in the box after visiting Policy and Results
+    ok    the verdicts are still shown: logreg_word:scored, distilbert:scored, jev:unavailable
+    ok    the slider is still at 777 (probability 0.6037): 777, probability 0.6037
+    ok    the chosen system is still DistilBERT: DistilBERT
+    ok    the Recall tab of the dumbbell plot is still the one shown
+
+PASS  S10  Failure states: 500, timeout, invalid JSON, results unavailable  (20 checks, 6.1s)
+    ok    a 500 shows the error box and leaves Score usable: "The API returned an unexpected response. Score again; if it keeps failing, check the output of the API server."
+    ok    no verdict is shown for a failed request: idle, idle, unavailable
+    ok    the next Score recovers: error box gone, verdicts shown: alert=null, tile scored
+    ok    invalid JSON shows the error box: "The API returned an unexpected response. Score again; if it keeps failing, check the output of the API server."
+    ok    and the next Score recovers: alert=null
+    ok    a JSON answer of the wrong shape shows the error box: "The API returned an unexpected response. Score again; if it keeps failing, check the output of the API server."
+    ok    while the request hangs Score is busy and disabled: busy=true
+    ok    after the time limit the error box says the API did not answer in time and Score works again: "The API did not answer in time. Score again; if it keeps failing, check the output of the API server."
+    ok    the next Score after the timeout recovers: alert=null, tile scored
+    ok    a request that fails while typing shows the Could not reach the API message: "Could not reach the API. Start it with python -m policyjev.api, then score again."
+    ok    results aborted: the Policy charts say Data not available: 3 sections, 4 boxes: Policy results on the test set | How JEV compares, measure by measure | Validation against test results at the fitted thresholds
+    ok    results aborted: no section is blank: shortest section has 122 characters
+    ok    results aborted: the explorer (which uses thresholds) still works: 6 rows
+    ok    results aborted: both Results charts say Data not available: Data not available. Start the API with python -m policyjev.api, then reload this page. | Data not available. Start the API with python -m policyjev.api, then re
+    ok    results aborted: and say how to start the API
+    ok    results 500: the Policy charts say Data not available: 3 sections, 4 boxes: Policy results on the test set | How JEV compares, measure by measure | Validation against test results at the fitted thresholds
+    ok    results 500: no section is blank: shortest section has 122 characters
+    ok    results 500: the explorer (which uses thresholds) still works: 6 rows
+    ok    results 500: both Results charts say Data not available: Data not available. Start the API with python -m policyjev.api, then reload this page. | Data not available. Start the API with python -m policyjev.api, then re
+    ok    results 500: and say how to start the API
+
+PASS  S11  Responsive: no sideways scroll and no clipped text at 360, 375, 768, 1024 and 1440 px  (64 checks, 18.3s)
+    ok    1180px: the three tiles reserve the same heading height: heights 64; logreg_word: "Allow" on 1 line(s); distilbert: "Allow" on 1 line(s); jev: "Human review" on 2 line(s)
+    ok    1180px: in every tile the time sits directly under the name: logreg_word 4.5 ms 0px below; distilbert 125.7 ms 0px below; jev 400.5 ms 0px below
+    ok    1180px: the headings start at the same height in all three tiles: 306
+    ok    1180px: the Human review heading is not clipped: 2 line(s) at 30.68px in a box 64px high
+    ok    1180px: a very long system name does not move the heading or the time, or leave the tile: tile widths, heading and time tops unchanged: true
+    ok    1180px: the marker is on its own line under the measure title and above the description: [{"measure":"m2_action_precision","flagBelowTitle":true,"descriptionBelowFlag":true,"sameLeft":true},{"measure":"action_coverage","flagBelowTitle":true,"descriptionBelowFlag":true,"sameLeft":true}]
+    ok    1060px: the three tiles reserve the same heading height: heights 58; logreg_word: "Allow" on 1 line(s); distilbert: "Allow" on 1 line(s); jev: "Human review" on 1 line(s)
+    ok    1060px: in every tile the time sits directly under the name: logreg_word 2.4 ms 0px below; distilbert 95.6 ms 0px below; jev 400.6 ms 0px below
+    ok    1060px: the headings start at the same height in all three tiles: 860
+    ok    1060px: the Human review heading is not clipped: 1 line(s) at 27.56px in a box 58px high
+    ok    1060px: a very long system name does not move the heading or the time, or leave the tile: tile widths, heading and time tops unchanged: true
+    ok    1060px: the marker is on its own line under the measure title and above the description: [{"measure":"m2_action_precision","flagBelowTitle":true,"descriptionBelowFlag":true,"sameLeft":true},{"measure":"action_coverage","flagBelowTitle":true,"descriptionBelowFlag":true,"sameLeft":true}]
+    ok    900px: the three tiles reserve the same heading height: heights 55; logreg_word: "Allow" on 1 line(s); distilbert: "Allow" on 1 line(s); jev: "Human review" on 1 line(s)
+    ok    900px: in every tile the time sits directly under the name: logreg_word 2.5 ms 0px below; distilbert 104.8 ms 0px below; jev 401.5 ms 0px below
+    ok    900px: the headings start at the same height in all three tiles: 853
+    ok    900px: the Human review heading is not clipped: 1 line(s) at 26px in a box 55px high
+    ok    900px: a very long system name does not move the heading or the time, or leave the tile: tile widths, heading and time tops unchanged: true
+    ok    900px: the marker is on its own line under the measure title and above the description: [{"measure":"m2_action_precision","flagBelowTitle":true,"descriptionBelowFlag":true,"sameLeft":true},{"measure":"action_coverage","flagBelowTitle":true,"descriptionBelowFlag":true,"sameLeft":true}]
+    ok    760px: the three tiles reserve the same heading height: heights 40; logreg_word: "Allow" on 1 line(s); distilbert: "Allow" on 1 line(s); jev: "Human review" on 1 line(s)
+    ok    760px: in every tile the time sits directly under the name: logreg_word 2.7 ms 0px below; distilbert 83.8 ms 0px below; jev 401.6 ms 0px below
+    ok    760px: the headings start at the same height in all three tiles: 840
+    ok    760px: the Human review heading is not clipped: 1 line(s) at 19px in a box 40px high
+    ok    760px: a very long system name does not move the heading or the time, or leave the tile: tile widths, heading and time tops unchanged: true
+    ok    760px: the marker is on its own line under the measure title and above the description: [{"measure":"m2_action_precision","flagBelowTitle":true,"descriptionBelowFlag":true,"sameLeft":true},{"measure":"action_coverage","flagBelowTitle":true,"descriptionBelowFlag":true,"sameLeft":true}]
+    ok    360px, Score empty: no sideways scroll and no clipped text: scrollWidth 360 of 360
+    ok    360px, Score scored, JEV unavailable: no sideways scroll and no clipped text: scrollWidth 360 of 360
+    ok    360px: JEV shows as unavailable
+    ok    360px, Policy, Precision tab: no sideways scroll and no clipped text: scrollWidth 360 of 360
+    ok    360px, Policy, Recall tab: no sideways scroll and no clipped text: scrollWidth 360 of 360
+    ok    360px, Results: no sideways scroll and no clipped text: scrollWidth 360 of 360
+    ok    360px: tapping the distilbert tile shows only its meter column: selected distilbert; columns shown: distilbert (6 cells)
+    ok    360px: tapping the jev tile shows only its meter column: selected jev; columns shown: jev (6 cells)
+    ok    360px: tapping the logreg_word tile shows only its meter column: selected logreg_word; columns shown: logreg_word (6 cells)
+    ok    360px: the segmented control changes the thresholds shown for each system: 3 systems, 3 distinct threshold sets
+    ok    360px, Policy after switching system: no sideways scroll and no clipped text: scrollWidth 360 of 360
+    ok    375px, Score empty: no sideways scroll and no clipped text: scrollWidth 375 of 375
+    ok    375px, Score scored, JEV unavailable: no sideways scroll and no clipped text: scrollWidth 375 of 375
+    ok    375px: JEV shows as unavailable
+    ok    375px, Policy, Precision tab: no sideways scroll and no clipped text: scrollWidth 375 of 375
+    ok    375px, Policy, Recall tab: no sideways scroll and no clipped text: scrollWidth 375 of 375
+    ok    375px, Results: no sideways scroll and no clipped text: scrollWidth 375 of 375
+    ok    375px: tapping the distilbert tile shows only its meter column: selected distilbert; columns shown: distilbert (6 cells)
+    ok    375px: tapping the jev tile shows only its meter column: selected jev; columns shown: jev (6 cells)
+    ok    375px: tapping the logreg_word tile shows only its meter column: selected logreg_word; columns shown: logreg_word (6 cells)
+    ok    375px: the segmented control changes the thresholds shown for each system: 3 systems, 3 distinct threshold sets
+    ok    375px, Policy after switching system: no sideways scroll and no clipped text: scrollWidth 375 of 375
+    ok    768px, Score empty: no sideways scroll and no clipped text: scrollWidth 768 of 768
+    ok    768px, Score scored, JEV unavailable: no sideways scroll and no clipped text: scrollWidth 768 of 768
+    ok    768px: JEV shows as unavailable
+    ok    768px, Policy, Precision tab: no sideways scroll and no clipped text: scrollWidth 768 of 768
+    ok    768px, Policy, Recall tab: no sideways scroll and no clipped text: scrollWidth 768 of 768
+    ok    768px, Results: no sideways scroll and no clipped text: scrollWidth 768 of 768
+    ok    1024px, Score empty: no sideways scroll and no clipped text: scrollWidth 1024 of 1024
+    ok    1024px, Score scored, JEV unavailable: no sideways scroll and no clipped text: scrollWidth 1024 of 1024
+    ok    1024px: JEV shows as unavailable
+    ok    1024px, Policy, Precision tab: no sideways scroll and no clipped text: scrollWidth 1024 of 1024
+    ok    1024px, Policy, Recall tab: no sideways scroll and no clipped text: scrollWidth 1024 of 1024
+    ok    1024px, Results: no sideways scroll and no clipped text: scrollWidth 1024 of 1024
+    ok    1440px, Score empty: no sideways scroll and no clipped text: scrollWidth 1440 of 1440
+    ok    1440px, Score scored, JEV unavailable: no sideways scroll and no clipped text: scrollWidth 1440 of 1440
+    ok    1440px: JEV shows as unavailable
+    ok    1440px, Policy, Precision tab: no sideways scroll and no clipped text: scrollWidth 1440 of 1440
+    ok    1440px, Policy, Recall tab: no sideways scroll and no clipped text: scrollWidth 1440 of 1440
+    ok    1440px, Results: no sideways scroll and no clipped text: scrollWidth 1440 of 1440
+
+PASS  S12  Keyboard: Tab reaches every control, focus is visible, the slider works, no trap  (17 checks, 2.6s)
+    ok    score: Tab goes around and does not get stuck: 12 stops before leaving the page
+    ok    score: Tab reaches every focusable control that is on screen: 11 controls, 0 missed
+    ok    score: every control shows a focus ring (outline of 2px or more) when it has focus: 12 stops, 0 without
+    ok    policy: Tab goes around and does not get stuck: 7 stops before leaving the page
+    ok    policy: Tab reaches every focusable control that is on screen: 6 controls, 0 missed
+    ok    policy: every control shows a focus ring (outline of 2px or more) when it has focus: 7 stops, 0 without
+    ok    policy: arrow keys reach every option of the "System" control: Logistic regression > DistilBERT > JEV
+    ok    policy: arrow keys reach every option of the "Measure" control: Precision of automatic action > Recall at the review threshold
+    ok    results: Tab goes around and does not get stuck: 4 stops before leaving the page
+    ok    results: Tab reaches every focusable control that is on screen: 3 controls, 0 missed
+    ok    results: every control shows a focus ring (outline of 2px or more) when it has focus: 4 stops, 0 without
+    ok    Home sets the slider to 0 (probability 0.0000, outcome Allow): 0, 0.0000, ALLOW
+    ok    End sets it to 1000 (probability 1.0000, outcome Action): 1000, 1.0000, ACTION
+    ok    ArrowRight moves up by one and ArrowLeft down by one: 3 then 2
+    ok    PageUp moves by more than one step: 2 to 102
+    ok    the slider's spoken value follows the probability shown: "probability 0.0104" / 0.0104
+    ok    the Policy page opens from the keyboard alone (Tab to the tab, Enter): hidden=false, selected=true
+
+PASS  S13  Reduced motion: no animations or transitions, numbers jump to the final value  (7 checks, 2.0s)
+    ok    the page sees prefers-reduced-motion: reduce
+    ok    the numbers show their final values the moment the verdict appears (no count-up): 12 of 12 already final
+    ok    and they do not change afterwards: 0 changed after 700 ms
+    ok    no element or pseudo-element has an animation or a transition longer than 0: 4239 computed styles checked; 0 animated
+    ok    document.getAnimations() reports nothing running: 0 running
+    ok    the chart lines are drawn in full (not waiting for an animation): dashoffset 0, animation "auto ease 0s 1 normal none running none"
+    ok    control: with motion allowed, many elements do animate or transition: 552 elements
+
+PASS  S14  Console cleanliness: no errors or warnings, no failed requests, no outside host  (4 checks, 0.0s)
+    ok    zero console errors or warnings in every page that was not made to fail: 40 pages opened; 0 unexpected
+    ok    zero failed or rejected requests and zero page errors in those pages: 0 unexpected
+    ok    every request of the whole run went to a test server on this machine: 507 requests, 4 hosts, 0 outside
+    ok    no request used an address other than 127.0.0.1: 0 requests
+    note  expected failures, caused on purpose by scenarios s01-abort, s01-kill, s10-score, s10-results-aborted, s10-results-500: 11 console messages and 14 failed requests, left out of the counts above
+
+PASS  S15  Model warm-up: the page shows a loading state, not a blank; first-request latency  (7 checks, 23.3s)
+    ok    while the models load, both local chips say loading: {"logreg_word":"loading","distilbert":"loading","jev":"needs key"}
+    ok    the API answers a request made during warm-up with loading issues, not an error: ["logreg_word:loading","distilbert:loading"]
+    ok    the DistilBERT tile shows Loading model and says why, not a blank: "Loading model": The model is still loading. Score again in a few seconds.
+    ok    a note says the models are loading: Loading models. The first request can take several seconds.
+    ok    loading is not shown as an error: alert=null
+    ok    no verdict tile is blank: 3 tiles, 0 blank
+    ok    once ready, Score gives both verdicts and the loading note is gone: scored, scored, note=null
+    note  the chips went from loading to ready by themselves, 18.5 s after the page opened (the server waits 4 s before loading each model)
+    note  request 1 after warm-up: whole request 128 ms; logistic regression 15.1 ms, DistilBERT 53.2 ms (time_ms from the API)
+    note  request 2 after warm-up: whole request 297 ms; logistic regression 3.5 ms, DistilBERT 45.1 ms (time_ms from the API)
+
+PASS  S16  Contrast: small text is at least 4.5:1 on the background it is actually drawn on  (8 checks, 9.6s)
+    ok    text was collected from all three pages at two widths: 912 pieces of text on 7 screens
+    ok    [python] text contrast on the rendered background[score-empty-1440]: 68 pieces of text; lowest contrast 4.60:1 (button.primary 'Score')
+    ok    [python] text contrast on the rendered background[score-scored-1440]: 69 pieces of text; lowest contrast 5.22:1 (p.notice 'This tool scores text for toxi')
+    ok    [python] text contrast on the rendered background[policy-1440]: 296 pieces of text; lowest contrast 4.54:1 (span.ot 'Review triggered by severe tox')
+    ok    [python] text contrast on the rendered background[results-1440]: 81 pieces of text; lowest contrast 5.58:1 (div.gn '6,090 positives')
+    ok    [python] text contrast on the rendered background[score-scored-375]: 45 pieces of text; lowest contrast 5.22:1 (p.notice 'This tool scores text for toxi')
+    ok    [python] text contrast on the rendered background[policy-375]: 281 pieces of text; lowest contrast 4.54:1 (span.ot 'Review triggered by severe tox')
+    ok    [python] text contrast on the rendered background[results-375]: 72 pieces of text; lowest contrast 5.58:1 (div.gn '6,090 positives')
+    note  each piece of text is checked against the pixels behind it, with the text hidden, by tests/e2e_check.py (S16 checks)
+
