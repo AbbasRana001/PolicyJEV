@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: "If you use this software or its results, please cite it as below."
+title: "PolicyJEV: a pre-registered comparison of zero-shot TypeSafe JEV with trained baselines on toxic-comment classification, with a moderation policy layer"
+type: software
+authors:
+  - family-names: Rana
+    given-names: Muhammad Abbas
+version: 1.0.0
+date-released: 2026-10-16
+license: MIT
+repository-code: "https://github.com/AbbasRana001/PolicyJEV"
+abstract: >-
+  A pre-registered comparison of zero-shot TypeSafe JEV (jev-1.13.0) with a TF-IDF
+  logistic regression and a fine-tuned DistilBERT on the Jigsaw Toxic Comment
+  Classification Challenge test set (63,978 comments), followed by an evaluation of
+  a three-way moderation policy (allow, human review, action) with thresholds fixed
+  on validation data. On test, JEV has the lowest mean average precision of the
+  three systems, and the validation targets for the policy did not hold on test for
+  any system. The repository contains the protocol, frozen-file manifest, metrics,
+  predictions, policy engine and a React and FastAPI console. It contains no comment text.
+keywords:
+  - toxicity classification
+  - content moderation
+  - zero-shot classification
+  - pre-registration
+  - calibration
+  - reproducible research
