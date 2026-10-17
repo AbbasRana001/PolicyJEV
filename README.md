@@ -1,6 +1,6 @@
 # PolicyJEV
 
-A comparison, run under a frozen protocol, of a zero-shot classifier (TypeSafe JEV) against two trained baselines on toxic-comment classification, followed by a test of what happens when the scores are turned into moderation decisions (allow, human review, action).
+A comparison, run under a frozen protocol, of a zero-shot classifier (TypeSafe's JEV, one of its System One models) against two trained baselines on toxic-comment classification, followed by a test of what happens when the scores are turned into moderation decisions (allow, human review, action).
 
 Author: Muhammad Abbas Rana. Licence: MIT.
 
@@ -8,7 +8,7 @@ Author: Muhammad Abbas Rana. Licence: MIT.
 
 ## The question
 
-JEV needs no training data: you describe each label as a set of natural-language questions and it returns probabilities. Two things were tested:
+JEV needs no training data: you describe each label as a set of natural-language questions and it returns probabilities. TypeSafe calls models of this kind System One: they return structured, typed decisions with probabilities instead of generating text. The term is the vendor's own, not an established research category. Two things were tested:
 
 1. **Ranking quality.** Does zero-shot JEV rank toxic comments as well as a TF-IDF logistic regression and a fine-tuned DistilBERT?
 2. **Decisions.** If the probabilities drive a three-way policy with thresholds fitted on validation data, how do the three systems behave on unseen data?
