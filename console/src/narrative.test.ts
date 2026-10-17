@@ -293,7 +293,7 @@ describe("budgetFinding and budgetHeadline", () => {
   });
 
   it("states the lead in the heading only when JEV is ahead of both at the smallest budget", () => {
-    expect(budgetHeadline(rows, "recall_rare")).toBe("JEV has higher rare-label recall only at the smallest review budgets");
+    expect(budgetHeadline(rows, "recall_rare")).toBe("JEV leads both baselines on rare-label recall only at the smallest review budgets");
     const behind = rows.map((row) => (row.budget_pct === 1 ? { ...row, lo: -0.2, hi: -0.1 } : row));
     expect(budgetHeadline(behind, "recall_rare")).toBe("Recall of rare-label comments as the review budget grows");
   });
@@ -371,8 +371,8 @@ describe("wording that must stay true for everything it covers", () => {
     );
 
   it("claims a lead at every budget only if there is one at every budget, and only at the smallest if it ends", () => {
-    expect(budgetHeadline(budgetRows([true, true, true]), "recall_rare")).toBe("JEV has higher rare-label recall at every review budget");
-    expect(budgetHeadline(budgetRows([true, true, false]), "recall_rare")).toBe("JEV has higher rare-label recall only at the smallest review budgets");
+    expect(budgetHeadline(budgetRows([true, true, true]), "recall_rare")).toBe("JEV leads both baselines on rare-label recall at every review budget");
+    expect(budgetHeadline(budgetRows([true, true, false]), "recall_rare")).toBe("JEV leads both baselines on rare-label recall only at the smallest review budgets");
     expect(budgetHeadline(budgetRows([false, true, true]), "recall_rare")).toBe("Recall of rare-label comments as the review budget grows");
     expect(budgetHeadline(budgetRows([true, false, true]), "recall_rare")).toBe("Recall of rare-label comments as the review budget grows");
   });

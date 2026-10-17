@@ -89,7 +89,19 @@ Full write-up: [`docs/results.md`](docs/results.md). Decision log: [`docs/decisi
 
 ## The console
 
-A React, TypeScript and Tailwind front end with a FastAPI back end, in [`console/`](console/). It has three views:
+A React, TypeScript and Tailwind front end with a FastAPI back end, in [`console/`](console/). It has three views, shown below.
+
+![Score view: one comment scored by all three systems](docs/images/console-score.png)
+
+*Score view, one request. Logistic regression sends this comment to human review; DistilBERT and JEV allow it. JEV latency varies between requests: this single call took 958 ms, against a median of 363 ms over the pilot and validation runs.*
+
+![Policy view: thresholds and the probability probe](docs/images/console-policy.png)
+
+*Policy view. Drag the probability to see which decision each label's thresholds give. The thresholds shown are logistic regression's, fitted on validation data.*
+
+![Results view: average precision by label and rare-label recall against review budget](docs/images/console-results.png)
+
+*Results view. Average precision by label with 95% intervals, and rare-label recall against review budget, on the test set.*
 
 - **Score.** Type a comment and see each system's probabilities, decision and latency side by side. JEV runs only when you press Score (or Ctrl+Enter); "Score as I type" calls the two local systems only.
 - **Policy.** The thresholds per system, a probability probe that shows which decision a given probability would get, the five policy measures, and validation-versus-test comparisons.

@@ -668,9 +668,9 @@ def test_s08_sentences_are_true_statements(obs, comparison, budget, record_prope
     if prefix == 0 or any(ahead_both[prefix:]):
         expected_h2 = "Recall of rare-label comments as the review budget grows"
     elif prefix == len(ahead_both):
-        expected_h2 = "JEV has higher rare-label recall at every review budget"
+        expected_h2 = "JEV leads both baselines on rare-label recall at every review budget"
     else:
-        expected_h2 = "JEV has higher rare-label recall only at the smallest review budgets"
+        expected_h2 = "JEV leads both baselines on rare-label recall only at the smallest review budgets"
     assert budget_h2 == expected_h2, (budget_h2, expected_h2, ahead_both)
     if budget_h2.endswith("only at the smallest review budgets"):
         assert ahead_both[:prefix] == [True] * prefix and not any(ahead_both[prefix:])  # the heading holds for every budget it covers

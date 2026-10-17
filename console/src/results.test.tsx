@@ -122,6 +122,6 @@ describe("when data is missing", () => {
 
   it("does not claim a lead for JEV in the heading without the data", () => {
     render(<ResultsView results={undefined} />);
-    expect(screen.queryByText(/JEV has higher rare-label recall/)).toBeNull();
+    expect(screen.queryByText(/JEV leads both baselines on rare-label recall/)).toBeNull();
   });
 });

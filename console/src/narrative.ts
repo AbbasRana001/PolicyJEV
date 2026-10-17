@@ -351,8 +351,9 @@ export function policyTargets(rows: readonly PolicyLabelRow[] | undefined): { re
 }
 
 /**
- * Heading for the review-budget chart. It names a lead only as far as it holds: JEV clearly ahead of both
- * baselines (interval above zero against each) at the smallest budgets only, or at every budget.
+ * Heading for the review-budget chart. It names a lead only as far as it holds: JEV clearly ahead of BOTH
+ * baselines (interval above zero against each) at the smallest budgets only, or at every budget. Being ahead of
+ * only one baseline at a budget does not count as a lead; the heading is then the neutral one.
  */
 export function budgetHeadline(rows: readonly BudgetRow[], metric: string): string {
   const budgets = [...new Set(rows.filter((row) => row.metric === metric).map((row) => row.budget_pct))].sort((a, b) => a - b);
@@ -367,6 +368,6 @@ export function budgetHeadline(rows: readonly BudgetRow[], metric: string): stri
   const laterAhead = aheadOfBoth.slice(prefix).some(Boolean);
   if (prefix === 0 || laterAhead) return "Recall of rare-label comments as the review budget grows";
   return prefix === aheadOfBoth.length
-    ? "JEV has higher rare-label recall at every review budget"
-    : "JEV has higher rare-label recall only at the smallest review budgets";
+    ? "JEV leads both baselines on rare-label recall at every review budget"
+    : "JEV leads both baselines on rare-label recall only at the smallest review budgets";
 }
